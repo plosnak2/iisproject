@@ -1,3 +1,8 @@
+<?php
+require "services/component.php";
+$db = new MainComponent();
+?>
+
 <html>
 <head>
         <!-- META TAGS -->
@@ -8,7 +13,11 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	</head>
     <body>
-    <?php include 'static/navbar.php' ?>
+
+    <?php 
+    include 'static/navbar.php';
+    $genres = $db->get_genres();
+    ?>
 
     <div style="background-color:rgb(200, 217, 219)">
         <div class="container" style="background-color:rgb(200, 217, 219); padding-top:20px">
@@ -18,25 +27,30 @@
                     <hr>
                 </div>
             </div>
-            <form>
+            <form method='get'>
                 <div class="form-row">
                     <div class="form-group col-md-3">
                     <label for="inputEmail4">Názov knihy</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="Názov knihy">
+                    <input type="text" class="form-control" id="inputEmail4" placeholder="Názov knihy" name="nazov">
                     </div>
                     <div class="form-group col-md-3">
                     <label for="inputPassword4">Vydavateľstvo</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Vydavateľstvo">
+                    <input type="text" class="form-control" id="inputPassword4" placeholder="Vydavateľstvo" name="vydavatelstvo">
                     </div>
                     <div class="form-group col-md-3">
                     <label for="inputPassword4">Autor</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Autor">
+                    <input type="text" class="form-control" id="inputPassword4" placeholder="Autor" name="autor">
                     </div>
                     <div class="form-group col-md-3">
                     <label for="inputState">Žáner</label>
-                    <select id="inputState" class="form-control">
+                    <select id="inputState" class="form-control" name="zaner">
                         <option selected>-</option>
-                        <option>...</option>
+                        <?php
+                        while($genre = $genres->fetch())
+                        {
+                            echo "<option>".$genre['genre']."</option>";
+                        }
+                        ?>
                     </select>
                     </div>
                 </div>
