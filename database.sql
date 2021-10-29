@@ -139,7 +139,22 @@ INSERT INTO book(isbn, name, authors, year, publisher, genre, rating)
     ('9788027507535', 'Černá píseň', 'Anthony Ryan', 2021 , 'HOST', 'Fantasy', 4.1),
     ('9788022021852', 'Na západe nič nové', 'Erich Maria Remarque', 2020 , 'Slovenský spisovateľ', 'Román', 4.6),
     ('9788055155869', 'Rozprávky barda Beedla', 'J.K. Rowling', 2017 , 'IKAR', 'Román', 3.7),
-    ('9788055606378', 'Hobit', 'J.R.R. Tolkien', 2012 , 'Slovart', 'Fantasy', 4.4);
+    ('9788055606378', 'Hobit', 'J.R.R. Tolkien', 2012 , 'Slovart', 'Fantasy', 4.4),
+    ('9788024276632', 'Mrazivé vraždy - Historky ke krbovému ohni', 'Agatha Christie', 2021 , 'Kalibr', 'Detektívky', 3.4),
+    ('9788055652627', 'Bremeno minulosti', 'Dominik Dán', 2021 , 'Slovart', 'Detektívky', 4.8),
+    ('9788022023375', 'Violončelistka', 'Daniel Silva', 2021 , 'Slovenský spisovateľ', 'Trilery', 2.7),
+    ('9788055178714', 'Volavka', 'František Kozmon', 2021 , 'IKAR', 'Detektívky', 4.9),
+    ('9788055163468', 'Kukučka', 'František Kozmon', 2018 , 'IKAR', 'Trilery', 4.7),
+    ('9788055602172', 'Hlava XXII', 'Joseph Heller', 2011 , 'Slovart', 'Román', 4.5),
+    ('9788022021609', 'Chrám Matky Božej v Paríži', 'Victor Hugo', 2019 , 'Slovenský spisovateľ', 'Román', 4.1),
+    ('9788082340047', 'Radostná správa', 'Peter Gärtner, Ďuro Balogh', 2021 , 'Monokel', 'Komiksy', 3.9),
+    ('9788088268567', 'Jágr, legenda', 'Lukáš Csicsely', 2021 , '65. pole', 'Komiksy', 3.6),
+    ('9788088262176', 'Kočičí rytíř a soumrak démonů', 'Jie Jü-tchung', 2021 , 'Mi:Lu Publishing', 'Komiksy', 2.4),
+    ('9788080902100', 'Cukráreň v Paríži', 'Julie Caplin', 2021 , 'Grada', 'Spoločenská beletria', 4.1),
+    ('9788082420190', 'Tak to vidím ja', 'George Orwell', 2021 , 'Premedia', 'Spoločenská beletria', 3.2),
+    ('9788055645797', 'Rod zeme a krvi - Mesto Luny', 'Sarah J. Maas', 2020 , 'Slovart', 'Spoločenská beletria', 3.7),
+    ('9788056603116', 'Paul McCartney', 'Philip Norman', 2017 , 'Slovart', 'Biografia', 4.0),
+    ('9788056614464', 'Freddie Mercury: Ilustrovaný životopis', 'Alfonso Casas', 2019 , 'Lindeni', 'Biografia', 5.0);
 
 
 INSERT INTO availability(count, book_isbn, lib_name)
