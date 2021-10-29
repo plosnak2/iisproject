@@ -156,18 +156,66 @@ INSERT INTO book(isbn, name, authors, year, publisher, genre, rating)
     ('9788056603116', 'Paul McCartney', 'Philip Norman', 2017 , 'Slovart', 'Biografia', 4.0),
     ('9788056614464', 'Freddie Mercury: Ilustrovaný životopis', 'Alfonso Casas', 2019 , 'Lindeni', 'Biografia', 5.0);
 
-
 INSERT INTO availability(count, book_isbn, lib_name)
-VALUES (12, '97912345123564', 'Karlova kniznica');
+    VALUES (12, '9788055606354', 'Mestská knižnica'),
+    (6, '9788027507535', 'Mestská knižnica'),
+    (9, '9788022021852', 'Knižnica Juraja Fándlyho'),
+    (4, '9788055155869', 'Mestská knižnica'),
+    (17, '9788055606378', 'Knižnica Juraja Fándlyho'),
+    (5, '9788024276632', 'Knižnica Juraja Fándlyho'),
+    (16, '9788055652627', 'Knižnica Juraja Fándlyho'),
+    (10, '9788055652627', 'Mestská knižnica'),
+    (10, '9788022023375', 'Mestská knižnica'),
+    (19, '9788055178714', 'Knižnica Juraja Fándlyho'),
+    (3, '9788055163468', 'Mestská knižnica'),
+    (2, '9788055602172', 'Knižnica Juraja Fándlyho'),
+    (7, '9788022021609', 'Mestská knižnica'),
+    (13, '9788082340047', 'Knižnica Juraja Fándlyho'),
+    (12, '9788088268567', 'Mestská knižnica'),
+    (7, '9788088268567', 'Knižnica Juraja Fándlyho'),
+    (7, '9788088262176', 'Mestská knižnica'),
+    (4, '9788080902100', 'Mestská knižnica'),
+    (6, '9788082420190', 'Knižnica Juraja Fándlyho'),
+    (17, '9788055645797', 'Knižnica Juraja Fándlyho'),
+    (11, '9788056603116', 'Mestská knižnica'),
+    (0, '9788056614464', 'Knižnica Juraja Fándlyho'),
+    (2, '9788056614464', 'Mestská knižnica');
 
 INSERT INTO reservation(date_end, status, book_isbn, lib_name, user_id)
-VALUES ('2021-11-12 18:44:25', 0, '97912345123564', 'Karlova kniznica', 1);
+	VALUES ('2021-11-12 18:44:25', 1, '9788055606354', 'Mestská knižnica', 1),
+	('2021-11-12 10:04:14', 1, '9788027507535', 'Mestská knižnica', 2),
+	('2021-08-13 15:19:19', 1, '9788022021852', 'Knižnica Juraja Fándlyho', 3),
+	('2021-02-19 07:36:50', 2, '9788055652627', 'Knižnica Juraja Fándlyho', 4),
+	('2021-06-11 09:30:42', 1, '9788022023375', 'Mestská knižnica', 5),
+	('2021-12-07 13:55:36', 2, '9788082340047', 'Knižnica Juraja Fándlyho', 6),
+	('2021-10-02 17:17:17', 2, '9788082420190', 'Knižnica Juraja Fándlyho', 7),
+	('2021-01-14 22:41:16', 3, '9788056614464', 'Mestská knižnica', 8),
+	('2021-04-29 05:35:11', 1, '9788056603116', 'Mestská knižnica', 9),
+	('2021-07-24 01:20:00', 3, '9788055645797', 'Knižnica Juraja Fándlyho', 10);
 
 INSERT INTO votes(book_isbn, lib_name, user_id)
-VALUES ('97912345123564', 'Karlova kniznica', 1);
+    VALUES ('9788088268567', 'Knižnica Juraja Fándlyho', 1),
+    ('9788088268567', 'Knižnica Juraja Fándlyho', 2),
+    ('9788056614464', 'Mestská knižnica', 3),
+    ('9788055178714', 'Knižnica Juraja Fándlyho', 4),
+    ('9788027507535', 'Mestská knižnica', 5),
+    ('9788024276632', 'Knižnica Juraja Fándlyho', 6),
+    ('9788082420190', 'Knižnica Juraja Fándlyho', 7),
+    ('9788088262176', 'Mestská knižnica', 8),
+    ('9788022023375', 'Mestská knižnica', 9),
+    ('9788055645797', 'Knižnica Juraja Fándlyho', 10);
 
 INSERT INTO orders(count, book_isbn, lib_name, user_id)
-VALUES (15, '97912345123564', 'Karlova kniznica', 2);
+    VALUES (1, '9788055645797', 'Knižnica Juraja Fándlyho', 1),
+    (1, '9788027507535', 'Mestská knižnica', 2),
+    (2, '9788055606378', 'Knižnica Juraja Fándlyho', 3),
+    (4, '9788022021609', 'Mestská knižnica', 4),
+    (3, '9788088268567', 'Mestská knižnica', 5),
+    (1, '9788024276632', 'Knižnica Juraja Fándlyho', 6),
+    (2, '9788088268567', 'Knižnica Juraja Fándlyho', 7),
+    (1, '9788088262176', 'Mestská knižnica', 8),
+    (2, '9788080902100', 'Mestská knižnica', 9),
+    (3, '9788056603116', 'Mestská knižnica', 10);
 
 /*
 SELECT EXISTS(SELECT * from votes WHERE user_id=2);
@@ -199,8 +247,12 @@ SELECT * from reservation;
 SELECT * from votes;
 SELECT * from orders;
 
-DROP table user;
-DROP table address;
+drop table address;
+drop table user;
 drop table library;
 drop table book;
+drop table availability;
+drop table reservation;
+drop table votes;
+drop table orders;
 SET FOREIGN_KEY_CHECKS=1;
