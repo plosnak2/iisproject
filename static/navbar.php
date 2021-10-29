@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" style="position: absolute;">
         <div class="container">
             <a class="navbar-brand" href="#" style="color: white;">Knižnica</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
@@ -8,19 +8,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Home</a>
+                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Domov</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px"" >About</a>
+                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px" >Profil</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px"">Portfolio</a>
+                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Kontakt</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px"">Services</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px"">Contact</a>
+                <button type="button" class="btn btn-primary" style="width:100px">Prihlásiť</button>
                 </li>
             </ul>
             </div>
