@@ -11,6 +11,7 @@ $db = new MainComponent();
         <!-- TITLE -->
         <title>Knižnica</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles/styles.css">
 	</head>
     <body>
 
@@ -60,8 +61,41 @@ $db = new MainComponent();
                     </div>
                 </div>
             </form>
+
+            <table class="table table-striped table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                    <th scope="col">Kniha</th>
+                    <th scope="col">Názov</th>
+                    <th scope="col">Autori</th>
+                    <th class="hide" scope="col">Žáner</th>
+                    <th class="hide" scope="col">Ks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // TODO if there is no filter set -> then i have to render all books, otherwise i need to render only those which match filter
+                    $books = $db->get_books();
+                    while($book = $books->fetch())
+                    {
+                        echo "<tr>";
+                        echo '<td> <img src="images/books/'.$book['isbn'].'.png" style="width:120px"/> </td>';
+                        // TODO here will be also href from button to book subpage
+                        echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
+                        echo '<td style="vertical-align:middle"><b>'.$book['authors'].'</b></td>';
+                        echo '<td class="hide" style="vertical-align:middle"><b>'.$book['genre'].'</b></td>';
+
+                        // i need to know how many pieces of each book there are available
+                        $count = $db->get_total_sum_of_book($book['isbn']);
+                        echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                    }
+                    ?>
+                </tbody>
+            </table>
         </div>
     </div>
+
+    
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

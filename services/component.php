@@ -22,6 +22,21 @@ class MainComponent
         $answer = $this->pdo->query('SELECT DISTINCT genre FROM book');
         return $answer;
     }
+
+    // function that returns genres of a books (if there is multiple times same genre in database, it will only return one of them because of distinct keyword)
+    function get_books()
+    {
+        $answer = $this->pdo->query('SELECT isbn, name, authors, publisher, genre FROM book');
+        return $answer;
+    }
+
+    // function that returns genres of a books (if there is multiple times same genre in database, it will only return one of them because of distinct keyword)
+    function get_total_sum_of_book($isbn)
+    {
+        $answer = $this->pdo->prepare('SELECT SUM(count) as count FROM availability WHERE book_isbn=?');
+        $answer->execute(array($isbn));
+        return $answer->fetch();
+    }
 }
 
 ?>
