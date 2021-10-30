@@ -3,6 +3,7 @@ require "../services/component.php";
 $db = new MainComponent();
 session_start();
 
+// if user is logged in then he will be automatically redirected to main page if he tries to enter login page
 if(isset($_SESSION['username']))
 {
     header("location: ../index.php");
