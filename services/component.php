@@ -51,6 +51,32 @@ class MainComponent
         $answer = $this->pdo->query($select);
         return $answer;
     }
+
+    function add_user($data)
+    {
+        $stmt = $this->pdo->prepare('INSERT INTO address (street, number, city, postal_code) VALUES (?, ?, ?, ?)');
+        
+        if ($stmt->execute([$data['street'], $data['number'], $data['city'], $data['postal_code']]))
+        {
+            $data['address_id'] = $this->pdo->lastInsertId();
+            unset($stmt);
+            $pwd = password_hash($data['password'], PASSWORD_DEFAULT);
+            $role = 1;
+            $stmt = $this->pdo->prepare('INSERT INTO user (name, surname, mail, phone, password, role, address_id) VALUES (?, ?, ?, ?, ?, ?, ?)');
+            if ($stmt->execute([$data['name'], $data['surname'], $data['mail'], $data['phone'], $pwd, $role, $data['address_id']]))
+            {
+                $data['user_id'] = $this->pdo->lastInsertId();
+                return $data;
+            }
+
+            return;
+        }
+        else
+        {
+            //$this->lastError = $stmt->errorInfo();
+            return FALSE;
+        }
+    }
 }
 
 ?>

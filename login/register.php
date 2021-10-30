@@ -10,32 +10,23 @@ if(isset($_SESSION['username']))
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    if(!empty(trim($_POST['username'])) && !empty(trim($_POST['password']))){
-        $stmt = $db->get_mail_password($_POST['username']);
+    if(!empty(trim($_POST['name'])) && !empty(trim($_POST['mail'])) && !empty(trim($_POST['street'])) && !empty(trim($_POST['city'])) && !empty(trim($_POST['password'])) 
+    && !empty(trim($_POST['surname'])) && !empty(trim($_POST['phone'])) && !empty(trim($_POST['number'])) && !empty(trim($_POST['postal_code'])) && !empty(trim($_POST['password_confirm']))){
+        $data = $db->add_user($_POST);
 
-        if(!empty($stmt))
-        {
-            $id = $stmt['id'];
-            $username = $stmt['mail'];
-            $hashed_password = $stmt['password'];
-            $role = $stmt['role'];
+        $_SESSION["loggedin"] = true;
+        $_SESSION["id"] = $data['user_id'];
+        $_SESSION["username"] = $_POST['mail'];
+        $_SESSION["role"]= 1;
 
-            if(password_verify($_POST['password'], $hashed_password)){                
-                // Store data in session variables
-                $_SESSION["loggedin"] = true;
-                $_SESSION["id"] = $id;
-                $_SESSION["username"] = $username;
-                $_SESSION["role"]= $role;                           
-                
-                // Redirect user to welcome page
-                header("location: ../index.php");
-                //echo "logged in";
-            }
-        }
-        unset($stmt);
+        // Redirect user to welcome page
+        header("location: ../index.php");
     }
 }
 ?>
+
+
+
 
 <html>
 <head>
@@ -115,28 +106,69 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </div>
 
     <body>
-        <div id="login">
-            <h3 class="text-center text-white pt-5">Login form</h3>
+        <div id="Register">
+            <h3 class="text-center text-white pt-5">Register form</h3>
             <div class="container">
-                <div id="login-row" class="row justify-content-center align-items-center">
-                    <div id="login-column" class="col-md-6">
-                        <div id="login-box" class="col-md-12">
-                            <form id="login-form" class="form" action="" method="post">
-                                <h3 class="text-center text-info">Login</h3>
+                <div id="register-row" class="row justify-content-center align-items-center">
+                    <div id="register-column" class="col-md-6">
+                        <div id="register-box" class="col-md-12">
+                            <form id="register-form" class="form" action="" method="post">
+                                <h3 class="text-center text-info">Register</h3>
                                 <div class="form-group">
-                                    <label for="username" class="text-info">Username:</label><br>
-                                    <input type="text" name="username" id="username" class="form-control">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <!-- Name -->
+                                            <label for="name" class="text-info">Meno:</label><br>
+                                            <input type="text" name="name" id="name" class="form-control">
+
+                                            <!-- Mail -->
+                                            <label for="mail" class="text-info">E-mail:</label><br>
+                                            <input type="text" name="mail" id="mail" class="form-control">
+
+                                            <!-- Street -->
+                                            <label for="street" class="text-info">Ulica:</label><br>
+                                            <input type="texte" name="street" id="street" class="form-control">
+
+                                            <!-- City -->
+                                            <label for="city" class="text-info">Mesto:</label><br>
+                                            <input type="text" name="city" id="city" class="form-control">
+
+                                            <!-- Password -->
+                                            <label for="password" class="text-info">Password:</label><br>
+                                            <input type="password" name="password" id="password" class="form-control">
+                                            <!--<p class="help-block" style="font-size: 10px;">Username can contain any letters or numbers, without spaces</p>-->
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <!-- Surname -->
+                                            <label for="surname" class="text-info">Priezvisko:</label><br>
+                                            <input type="text" name="surname" id="surname" class="form-control">
+
+                                            <!-- Phone -->
+                                            <label for="phone" class="text-info">Tel. číslo:</label><br>
+                                            <input type="text" name="phone" id="phone" class="form-control">
+
+                                            <!-- Number -->
+                                            <label for="number" class="text-info">Číslo:</label><br>
+                                            <input type="text" name="number" id="number" class="form-control">
+
+                                            <!-- postal_code -->
+                                            <label for="postal_code" class="text-info">PSČ:</label><br>
+                                            <input type="text" name="postal_code" id="postal_code" class="form-control">
+
+                                            <!-- Password(Confirm) -->
+                                            <label for="password_confirm" class="text-info">Password(Confirm):</label><br>
+                                            <input type="password" name="password_confirm" id="password_confirm" class="form-control">
+                                        </div>
+                                    </div>
+                                    
                                 </div>
+                        
                                 <div class="form-group">
-                                    <label for="password" class="text-info">Password:</label><br>
-                                    <input type="password" name="password" id="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
                                     <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
                                 </div>
                                 <div id="register-link" class="text-right">
-                                    <a href="./register.php" class="text-info">Register here</a>
+                                    <a href="./login.php" class="text-info">Login here</a>
                                 </div>
                             </form>
                         </div>
