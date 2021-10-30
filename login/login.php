@@ -51,7 +51,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="position: absolute;">
         <div class="container">
-            <a class="navbar-brand" href="#" style="color: white;">Knižnica</a>
+            <a class="navbar-brand" href="../index.php" style="color: white;">Knižnica</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
             <span class="navbar-toggler-icon" ></span>
             </button>
@@ -59,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Domov</a>
+                <a class="nav-link" href="../index.php" style="color: white; background-color:black; width:100px">Domov</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="#" style="color: white; background-color:black; width:100px" >Profil</a>
