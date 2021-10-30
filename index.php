@@ -13,6 +13,8 @@ session_start();
         <title>Knižnica</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="styles/styles.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+        
 	</head>
     <body>
 
@@ -84,8 +86,8 @@ session_start();
     $genres = $db->get_genres();
     ?>
 
-    <div style="background-color:rgb(200, 217, 219)">
-        <div class="container" style="background-color:rgb(200, 217, 219); padding-top:20px">
+    <div style="background-color:rgba(241,241,241,255); padding-bottom:20px">
+        <div class="container" style="background-color:rgba(241,241,241,255); padding-top:20px">
             <div class="form-row">
                 <div class="form-group col-md-12">
                     <h3>Filter</h3>
@@ -186,7 +188,7 @@ session_start();
                 </div>
             </form>
 
-            <table class="table table-striped table-dark">
+            <table class="table table-striped table-dark" style="margin-bottom:0px">
                 <thead class="thead-dark">
                     <tr>
                     <th scope="col">Kniha</th>
@@ -312,7 +314,10 @@ session_start();
             </table>
         </div>
     </div>
-
+    
+    <?php
+    include './static/footer.php';
+    ?>
     
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
