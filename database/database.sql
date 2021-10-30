@@ -114,19 +114,23 @@ INSERT INTO address(street, number, city, postal_code)
     ('Výstavná', '9', 'Sverepec', '94901'),
     ('Horská', '31', 'Šurany', '65432'),
     ('Pod Briežkom', '26', 'Púchov', '93219'),
-    ('Studničná', '8', 'Považská Bystrica', '81748');
+    ('Studničná', '8', 'Považská Bystrica', '81748'),
+    ('Staničná', '105', 'Nitra', '94920'),
+    ('Studničná', '9', 'Považská Bystrica', '81748');
 
 INSERT INTO user(name, surname, mail, phone, password, role, address_id)
-    VALUES ('Alex', 'Babjak', 'alex.babka11@gmail.com', '0904183951', '$2y$10$I1rqUhH/nfaipLQYX6YMFO1edFnDHNEenAWQA.tGreWtU7/imSmnW', 1,1),
-    ('Hana', 'Jakabová', 'hjakabovaana@seznam.sk', '0905654789', 'hashed_pass', 3,2),
+    VALUES ('Alex', 'Babka', 'alex.babka11@gmail.com', '0904183951', '$2y$10$I1rqUhH/nfaipLQYX6YMFO1edFnDHNEenAWQA.tGreWtU7/imSmnW', 1,1),
+    ('Hana', 'Jakabová', 'knihovnickahana@gmail.com', '0905654789', '$2y$10$n.aG2BiMVD6s5gy9xPgfTOofldLSGthGDh2oo7DYTQFTwoTHueUOC', 3,2),
     ('Igor', 'Jurčina', 'ijurcina@centrum.sk', '0904442266', 'hashed_pass', 1,4),
     ('Anabela', 'Bednárová', 'a.bednarova@gmail.com', '0907167943', 'hashed_pass', 1,6),
     ('Ignác', 'Ker', 'igi.ker@post.sk', '0907625856', 'hashed_pass', 1,7),
     ('Boris', 'Čapka', 'bo.capka5@gmail.com', '0905856854', 'hashed_pass', 1,8),
-    ('Maroš', 'Lupták', 'xlupta15@post.sk', '0915242624', 'hashed_pass', 1,9),
+    ('Maroš', 'Lupták', 'knihovnikmaros@gmail.com', '0915242624', '$2y$10$n.aG2BiMVD6s5gy9xPgfTOofldLSGthGDh2oo7DYTQFTwoTHueUOC', 3,9),
     ('Erika', 'Drobná', 'drobna.erika@gmail.com', '0903157984', 'hashed_pass', 1,10),
     ('Oliver', 'Zima', 'ozima@centrum.sk', '0901535743', 'hashed_pass', 1,11),
-    ('Klára', 'Gašparová', 'gasparklara3@centrum.sk', '0907384729', 'hash_pass', 1,12);
+    ('Klára', 'Gašparová', 'gasparklara3@centrum.sk', '0907384729', 'hash_pass', 1,12),
+    ('Štefan', 'Distribútor', 'distributor@gmail.com', '0901234567', '$2y$10$3zX..jPeRZ2ybbpnoj5P/ut3cxrlGrQzV04kdgWYnh.RZ/5LXPHe2', 2,13),
+    ('Adam', 'Admin', 'admin@gmail.com', '0902345678', '$2y$10$gqPx1k54JO6ucth92gCdFOLvN0I2mi36T/hN3VVzuqehM8me8mqbm', 4,14);
 
 INSERT INTO library(name, opening_hours, description, address_id, user_id)
     VALUES ('Mestská knižnica', '- - 07:00 18:30 07:00 18:30 07:00 18:30 07:00 18:30 08:00 17:00 08:00 17:00',

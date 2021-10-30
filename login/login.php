@@ -18,18 +18,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $id = $stmt['id'];
             $username = $stmt['mail'];
             $hashed_password = $stmt['password'];
+            $role = $stmt['role'];
 
-            if(password_verify($_POST['password'], $hashed_password)){
-                // Password is correct, so start a new session
-                
+            if(password_verify($_POST['password'], $hashed_password)){                
                 // Store data in session variables
                 $_SESSION["loggedin"] = true;
                 $_SESSION["id"] = $id;
-                $_SESSION["username"] = $username;                            
+                $_SESSION["username"] = $username;
+                $_SESSION["role"]= $role;                           
                 
                 // Redirect user to welcome page
                 header("location: ../index.php");
-                echo "logged in";
+                //echo "logged in";
             } /*else{
                 echo "Problem with log in";
             }

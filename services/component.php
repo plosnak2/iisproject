@@ -41,7 +41,7 @@ class MainComponent
     //function that returns id, mail and hashed password
     function get_mail_password($mail)
     {
-        $answer = $this->pdo->prepare('SELECT id, mail, password FROM user WHERE mail=?');
+        $answer = $this->pdo->prepare('SELECT id, mail, password, role FROM user WHERE mail=?');
         $answer->execute(array($mail));
         return $answer->fetch();
     }
