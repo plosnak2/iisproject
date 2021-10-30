@@ -17,7 +17,7 @@
                 <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Kontakt</a>
                 </li>
                 <li class="nav-item">
-                <button type="button" class="btn btn-primary" style="width:100px">Prihlásiť</button>
+                <a href="./login/login.php"><button type="button" class="btn btn-primary" style="width:100px">Prihlásiť</button></a>
                 </li>
             </ul>
             </div>
