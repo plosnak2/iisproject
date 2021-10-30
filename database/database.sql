@@ -14,7 +14,7 @@ CREATE TABLE user (
     surname VARCHAR(30) NOT NULL,
     mail VARCHAR(50),
     phone VARCHAR(10),
-    password VARCHAR(50),
+    password VARCHAR(200),
     role int(1),
     address_id int,
     constraint fk_address FOREIGN KEY (address_id)
