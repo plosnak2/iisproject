@@ -1,6 +1,7 @@
 <?php
 require "services/component.php";
 $db = new MainComponent();
+session_start();
 ?>
 
 <html>
@@ -34,7 +35,16 @@ $db = new MainComponent();
                 <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Kontakt</a>
                 </li>
                 <li class="nav-item">
-                <a href="./login/login.php"><button type="button" class="btn btn-primary" style="width:100px">Prihlásiť</button></a>
+                <?php
+                if(isset($_SESSION['username']))
+                {
+                    echo '<a href="./login/logout.php"><button type="button" class="btn btn-primary" style="width:100px">Odhlásiť</button></a>';
+                } else
+                {
+                    echo '<a href="./login/login.php"><button type="button" class="btn btn-primary" style="width:100px">Prihlásiť</button></a>';
+                }
+                ?>
+                
                 </li>
             </ul>
             </div>

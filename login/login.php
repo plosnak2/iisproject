@@ -1,6 +1,12 @@
 <?php
 require "../services/component.php";
 $db = new MainComponent();
+session_start();
+
+if(isset($_SESSION['username']))
+{
+    header("location: ../index.php");
+}
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty(trim($_POST['username'])) && !empty(trim($_POST['password']))){
@@ -14,7 +20,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             if(password_verify($_POST['password'], $hashed_password)){
                 // Password is correct, so start a new session
-                session_start();
                 
                 // Store data in session variables
                 $_SESSION["loggedin"] = true;
@@ -68,7 +73,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Kontakt</a>
                 </li>
                 <li class="nav-item">
-                <a href="#"><button type="button" class="btn btn-primary" style="width:100px">Prihlásiť</button></a>
+                <?php
+                if(isset($_SESSION['username']))
+                {
+                    echo '<a href="./logout.php"><button type="button" class="btn btn-primary" style="width:100px">Odhlásiť</button></a>';
+                } else
+                {
+                    echo '<a href="./login.php"><button type="button" class="btn btn-primary" style="width:100px">Prihlásiť</button></a>';
+                }
+                ?>
                 </li>
             </ul>
             </div>
