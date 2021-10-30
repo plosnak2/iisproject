@@ -17,7 +17,7 @@ $db = new MainComponent();
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="position: absolute;">
         <div class="container">
-            <a class="navbar-brand" href="#" style="color: white;">Knižnica</a>
+            <a class="navbar-brand" href="./index.php" style="color: white;">Knižnica</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
             <span class="navbar-toggler-icon" ></span>
             </button>
@@ -25,7 +25,7 @@ $db = new MainComponent();
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Domov</a>
+                <a class="nav-link" href="./index.php" style="color: white; background-color:black; width:100px">Domov</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="#" style="color: white; background-color:black; width:100px" >Profil</a>
@@ -86,11 +86,35 @@ $db = new MainComponent();
                 <div class="form-row">
                     <div class="form-group col-md-3">
                     <label for="inputEmail4">Názov knihy</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="Názov knihy" name="nazov">
+                    <input type="text" class="form-control" id="inputEmail4" placeholder="Názov knihy" name="nazov" 
+                    <?php 
+                    if(count($_GET) == 0)
+                    {
+                        ;
+                    } else
+                    {
+                        if (!(empty($_GET['nazov'])))
+                        {
+                            echo 'value="'.$_GET['nazov'].'"';
+                        }
+                    }
+                    ?>>
                     </div>
                     <div class="form-group col-md-3">
                     <label for="inputPassword4">Vydavateľstvo</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="Vydavateľstvo" name="vydavatelstvo">
+                    <input type="text" class="form-control" id="inputPassword4" placeholder="Vydavateľstvo" name="vydavatelstvo"
+                    <?php 
+                    if(count($_GET) == 0)
+                    {
+                        ;
+                    } else
+                    {
+                        if (!(empty($_GET['vydavatelstvo'])))
+                        {
+                            echo 'value="'.$_GET['vydavatelstvo'].'"';
+                        }
+                    }
+                    ?>>
                     </div>
                     <div class="form-group col-md-3">
                     <label for="inputPassword4">Autor</label>
@@ -98,20 +122,44 @@ $db = new MainComponent();
                     </div>
                     <div class="form-group col-md-3">
                     <label for="inputState">Žáner</label>
-                    <select id="inputState" class="form-control" name="zaner">
+                    <select id="inputState" class="form-control" name="zaner"
+                    <?php 
+                    if(count($_GET) == 0)
+                    {
+                        ;
+                    } else
+                    {
+                        if (!(empty($_GET['zaner'])))
+                        {
+                            echo 'value="'.$_GET['zaner'].'"';
+                        }
+                    }
+                    ?>>
                         <option selected>-</option>
                         <?php
                         while($genre = $genres->fetch())
                         {
-                            echo "<option>".$genre['genre']."</option>";
+                            if((count($_GET) != 0) && (!(empty($_GET['zaner'])))){
+                                if ($_GET['zaner'] === $genre['genre']){
+                                    echo "<option selected>".$genre['genre']."</option>";
+                                } else {
+                                    echo "<option>".$genre['genre']."</option>";
+                                }
+                            } else {
+                                echo "<option>".$genre['genre']."</option>";
+                            }
+                            
                         }
                         ?>
                     </select>
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-12 text-center">
-                        <button type="submit" class="btn btn-primary">Filtrovať</button>
+                    <div class="form-group col-6 text-left">
+                        <button type="button" class="btn btn-primary"style="width:100px" onclick="window.location='./index.php';">Zrušit</button>  
+                    </div>
+                    <div class="form-group col-6 text-right">
+                        <button type="submit" class="btn btn-primary" style="width:100px">Filtrovať</button>  
                     </div>
                 </div>
             </form>
@@ -129,20 +177,50 @@ $db = new MainComponent();
                 <tbody>
                     <?php
                     // TODO if there is no filter set -> then i have to render all books, otherwise i need to render only those which match filter
-                    $books = $db->get_books();
-                    while($book = $books->fetch())
+                    if(count($_GET) == 0)
                     {
-                        echo "<tr>";
-                        echo '<td> <img src="images/books/'.$book['isbn'].'.png" style="width:120px"/> </td>';
-                        // TODO here will be also href from button to book subpage
-                        echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
-                        echo '<td style="vertical-align:middle"><b>'.$book['authors'].'</b></td>';
-                        echo '<td class="hide" style="vertical-align:middle"><b>'.$book['genre'].'</b></td>';
+                        $books = $db->get_books();
+                        while($book = $books->fetch())
+                        {
+                            echo "<tr>";
+                            echo '<td> <img src="images/books/'.$book['isbn'].'.png" style="width:120px"/> </td>';
+                            // TODO here will be also href from button to book subpage
+                            echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
+                            echo '<td style="vertical-align:middle"><b>'.$book['authors'].'</b></td>';
+                            echo '<td class="hide" style="vertical-align:middle"><b>'.$book['genre'].'</b></td>';
 
-                        // i need to know how many pieces of each book there are available
-                        $count = $db->get_total_sum_of_book($book['isbn']);
-                        echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                            // i need to know how many pieces of each book there are available
+                            $count = $db->get_total_sum_of_book($book['isbn']);
+                            echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                        }
+                    } else 
+                    {
+                        // if nothing is set to anything then i also display all books
+                        if(empty($_GET['nazov']) && empty($_GET['vydavatelstvo']) && empty($_GET['autor']) && ($_GET['zaner'] === '-' ))
+                        {
+                            $books = $db->get_books();
+                            while($book = $books->fetch())
+                            {
+                                echo "<tr>";
+                                echo '<td> <img src="images/books/'.$book['isbn'].'.png" style="width:120px"/> </td>';
+                                // TODO here will be also href from button to book subpage
+                                echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
+                                echo '<td style="vertical-align:middle"><b>'.$book['authors'].'</b></td>';
+                                echo '<td class="hide" style="vertical-align:middle"><b>'.$book['genre'].'</b></td>';
+
+                                // i need to know how many pieces of each book there are available
+                                $count = $db->get_total_sum_of_book($book['isbn']);
+                                echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                            }
+                        } else {
+                            echo $_GET['nazov'];
+                            echo $_GET['vydavatelstvo'];
+                            echo $_GET['autor'];
+                            echo $_GET['zaner'];
+                        }
+                        
                     }
+                    
                     ?>
                 </tbody>
             </table>
