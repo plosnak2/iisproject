@@ -117,7 +117,7 @@ INSERT INTO address(street, number, city, postal_code)
     ('Studničná', '8', 'Považská Bystrica', '81748');
 
 INSERT INTO user(name, surname, mail, phone, password, role, address_id)
-    VALUES ('Alex', 'Babjak', 'alex.babka11@gmail.com', '0904183951', 'hashed_pass', 1,1),
+    VALUES ('Alex', 'Babjak', 'alex.babka11@gmail.com', '0904183951', '$2y$10$I1rqUhH/nfaipLQYX6YMFO1edFnDHNEenAWQA.tGreWtU7/imSmnW', 1,1),
     ('Hana', 'Jakabová', 'hjakabovaana@seznam.sk', '0905654789', 'hashed_pass', 3,2),
     ('Igor', 'Jurčina', 'ijurcina@centrum.sk', '0904442266', 'hashed_pass', 1,4),
     ('Anabela', 'Bednárová', 'a.bednarova@gmail.com', '0907167943', 'hashed_pass', 1,6),
