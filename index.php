@@ -118,7 +118,19 @@ $db = new MainComponent();
                     </div>
                     <div class="form-group col-md-3">
                     <label for="inputPassword4">Autor</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="Autor" name="autor">
+                    <input type="text" class="form-control" id="inputPassword4" placeholder="Autor" name="autor"
+                    <?php 
+                    if(count($_GET) == 0)
+                    {
+                        ;
+                    } else
+                    {
+                        if (!(empty($_GET['autor'])))
+                        {
+                            echo 'value="'.$_GET['autor'].'"';
+                        }
+                    }
+                    ?>>
                     </div>
                     <div class="form-group col-md-3">
                     <label for="inputState">Žáner</label>
@@ -176,7 +188,7 @@ $db = new MainComponent();
                 </thead>
                 <tbody>
                     <?php
-                    // TODO if there is no filter set -> then i have to render all books, otherwise i need to render only those which match filter
+                    // listing all books from db, when there is no filter set
                     if(count($_GET) == 0)
                     {
                         $books = $db->get_books();
@@ -212,11 +224,75 @@ $db = new MainComponent();
                                 $count = $db->get_total_sum_of_book($book['isbn']);
                                 echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
                             }
-                        } else {
-                            echo $_GET['nazov'];
-                            echo $_GET['vydavatelstvo'];
-                            echo $_GET['autor'];
-                            echo $_GET['zaner'];
+                        } else 
+                        {
+                            // this else handles filter -> creates string that will be send to db and after that handle the rendering of filtered books
+                            $final_string = "SELECT isbn, name, authors, publisher, genre FROM book WHERE";
+                            $number_of_conditions = 0;
+                            $number_of_handled = 0;
+                            if(!empty($_GET['nazov'])) $number_of_conditions++;
+                            if(!empty($_GET['vydavatelstvo'])) $number_of_conditions++;
+                            if(!empty($_GET['autor'])) $number_of_conditions++;
+                            if($_GET['zaner'] !== '-') $number_of_conditions++;
+                            
+                            if(!empty($_GET['nazov']))
+                            {
+                                $final_string = $final_string . " name regexp '" . $_GET['nazov'] . "'";
+                                $number_of_handled++;
+                            }
+
+                            if(!empty($_GET['vydavatelstvo']))
+                            {
+                                if($number_of_handled == 0)
+                                {
+                                    $final_string = $final_string . " publisher regexp '" . $_GET['vydavatelstvo'] . "'";
+                                } else 
+                                {
+                                    $final_string = $final_string . " AND publisher regexp '" . $_GET['vydavatelstvo'] . "'";
+                                }
+                                $number_of_handled++;
+                            }
+
+                            if(!empty($_GET['autor']))
+                            {
+                                if($number_of_handled == 0)
+                                {
+                                    $final_string = $final_string . " authors regexp '" . $_GET['autor'] . "'";
+                                } else 
+                                {
+                                    $final_string = $final_string . " AND authors regexp '" . $_GET['autor'] . "'";
+                                }
+                                $number_of_handled++;
+                            }
+
+                            if($_GET['zaner'] !== '-')
+                            {
+                                if($number_of_handled == 0)
+                                {
+                                    $final_string = $final_string . " genre regexp '" . $_GET['zaner'] . "'";
+                                } else 
+                                {
+                                    $final_string = $final_string . " AND genre regexp '" . $_GET['zaner'] . "'";
+                                }
+                                $number_of_handled++;
+                            }
+
+                            //echo $final_string;
+
+                            $books = $db->get_filtered_books($final_string);
+                            while($book = $books->fetch())
+                            {
+                                echo "<tr>";
+                                echo '<td> <img src="images/books/'.$book['isbn'].'.png" style="width:120px"/> </td>';
+                                // TODO here will be also href from button to book subpage
+                                echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
+                                echo '<td style="vertical-align:middle"><b>'.$book['authors'].'</b></td>';
+                                echo '<td class="hide" style="vertical-align:middle"><b>'.$book['genre'].'</b></td>';
+
+                                // i need to know how many pieces of each book there are available
+                                $count = $db->get_total_sum_of_book($book['isbn']);
+                                echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                            }
                         }
                         
                     }

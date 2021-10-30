@@ -45,6 +45,12 @@ class MainComponent
         $answer->execute(array($mail));
         return $answer->fetch();
     }
+
+    function get_filtered_books($select)
+    {
+        $answer = $this->pdo->query($select);
+        return $answer;
+    }
 }
 
 ?>
