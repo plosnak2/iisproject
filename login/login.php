@@ -10,6 +10,7 @@ if(isset($_SESSION['username']))
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $username = $_POST['username'];
     if(!empty(trim($_POST['username'])) && !empty(trim($_POST['password']))){
         $stmt = $db->get_mail_password($_POST['username']);
 
@@ -29,8 +30,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 // Redirect user to welcome page
                 header("location: ../index.php");
-                //echo "logged in";
             }
+            else{
+                // When password does not match password from database 
+                header("Location: login.php?username=" .$username . "&pass_error=Nesprávne heslo!");
+            }
+        }
+        else{
+            // When username does not match mail from database
+            header("Location: login.php?username=" .$username . "&error=Nesprávny E-mail!");
         }
         unset($stmt);
     }
@@ -115,21 +123,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div id="login-column" class="col-md-6">
                         <div id="login-box" class="col-md-12">
                             <form id="login-form" class="form" action="" method="post">
-                                <h3 class="text-center text-info">Login</h3>
+                                <h3 class="text-center text-info">Prihlásenie</h3>
                                 <div class="form-group">
-                                    <label for="username" class="text-info">Username:</label><br>
-                                    <input type="text" name="username" id="username" class="form-control">
+                                    <label for="username" class="text-info">E-mail:</label><br>
+                                    <input type="text" name="username" id="username" class="form-control" value="<?php if (isset($username)) {echo $username;} elseif(isset($_GET['username'])) {echo $_GET['username'];}?>" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password" class="text-info">Password:</label><br>
-                                    <input type="password" name="password" id="password" class="form-control">
+                                    <?php if (isset($_GET['error'])) 
+                                    { ?> <p class="errorMsg" style="color: red;"><?php echo $_GET['error']; ?></p>
+                                    <?php } ?>
                                 </div>
                                 <div class="form-group">
-                                    <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                    <label for="password" class="text-info">Heslo:</label><br>
+                                    <input type="password" name="password" id="password" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <?php if (isset($_GET['pass_error'])) 
+                                    { ?> <p class="error" style="color: red;"><?php echo $_GET['pass_error']; ?></p>
+                                    <?php } ?>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="Prihlásiť">
                                 </div>
                                 <div id="register-link" class="text-right">
-                                    <a href="./register.php" class="text-info">Register here</a>
+                                    <a href="./register.php" class="text-info">Registrovať tu</a>
                                 </div>
                             </form>
                         </div>
