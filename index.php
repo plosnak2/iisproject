@@ -254,14 +254,14 @@ session_start();
                         {
                             echo "<tr>";
                             echo '<td> <img src="images/books/'.$book['isbn'].'.png" style="width:120px"/> </td>';
-                            // TODO here will be also href from button to book subpage
-                            echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
+                            echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" onclick="window.location.href='."'./book/book.php?isbn=". $book['isbn']. "'" . '" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
                             echo '<td style="vertical-align:middle"><b>'.$book['authors'].'</b></td>';
                             echo '<td class="hide" style="vertical-align:middle"><b>'.$book['genre'].'</b></td>';
 
                             // i need to know how many pieces of each book there are available
                             $count = $db->get_total_sum_of_book($book['isbn']);
                             echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                            echo '</tr>';
                         }
                     } else 
                     {
@@ -273,14 +273,14 @@ session_start();
                             {
                                 echo "<tr>";
                                 echo '<td> <img src="images/books/'.$book['isbn'].'.png" style="width:120px"/> </td>';
-                                // TODO here will be also href from button to book subpage
-                                echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
+                                echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" onclick="window.location.href='."'./book/book.php?isbn=". $book['isbn']. "'" . '" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
                                 echo '<td style="vertical-align:middle"><b>'.$book['authors'].'</b></td>';
                                 echo '<td class="hide" style="vertical-align:middle"><b>'.$book['genre'].'</b></td>';
 
                                 // i need to know how many pieces of each book there are available
                                 $count = $db->get_total_sum_of_book($book['isbn']);
                                 echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                                echo '</tr>';
                             }
                         } else 
                         {
@@ -342,14 +342,14 @@ session_start();
                             {
                                 echo "<tr>";
                                 echo '<td> <img src="images/books/'.$book['isbn'].'.png" style="width:120px"/> </td>';
-                                // TODO here will be also href from button to book subpage
-                                echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
+                                echo '<td style="vertical-align:middle"><b>'.$book['name'].'</b><br/><button type="button" onclick="window.location.href='."'./book/book.php?isbn=". $book['isbn']. "'" . '" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';
                                 echo '<td style="vertical-align:middle"><b>'.$book['authors'].'</b></td>';
                                 echo '<td class="hide" style="vertical-align:middle"><b>'.$book['genre'].'</b></td>';
 
                                 // i need to know how many pieces of each book there are available
                                 $count = $db->get_total_sum_of_book($book['isbn']);
                                 echo '<td class="hide" style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                                echo '</tr>';
                             }
                         }
                         

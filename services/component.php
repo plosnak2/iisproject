@@ -31,6 +31,14 @@ class MainComponent
     }
 
     // function that returns genres of a books (if there is multiple times same genre in database, it will only return one of them because of distinct keyword)
+    function get_book($isbn)
+    {
+        $answer = $this->pdo->prepare('SELECT isbn, name, authors, publisher, genre, rating, year FROM book WHERE isbn=?');
+        $answer->execute(array($isbn));
+        return $answer->fetch();
+    }
+
+    // function that returns genres of a books (if there is multiple times same genre in database, it will only return one of them because of distinct keyword)
     function get_total_sum_of_book($isbn)
     {
         $answer = $this->pdo->prepare('SELECT SUM(count) as count FROM availability WHERE book_isbn=?');
@@ -46,10 +54,26 @@ class MainComponent
         return $answer->fetch();
     }
 
+    // function that returns books with specific filter
     function get_filtered_books($select)
     {
         $answer = $this->pdo->query($select);
         return $answer;
+    }
+
+    // function that returns libraries from database
+    function get_libs()
+    {
+        $answer = $this->pdo->query('SELECT * FROM library');
+        return $answer;
+    }
+
+    // function that returns libraries from database
+    function get_num_of_books_in_lib($isbn, $lib_name)
+    {
+        $answer = $this->pdo->prepare('SELECT count FROM availability WHERE book_isbn=? AND lib_name=?');
+        $answer->execute(array($isbn, $lib_name));
+        return $answer->fetch();
     }
 
     function add_user($data)
