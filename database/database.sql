@@ -213,7 +213,7 @@ INSERT INTO reservation(date_end, status, book_isbn, lib_name, user_id)
 	('2021-01-14 22:41:16', 3, '9788056614464', 'Mestská knižnica', 8),
 	('2021-04-29 05:35:11', 1, '9788056603116', 'Mestská knižnica', 9),
 	('2021-07-24 01:20:00', 3, '9788055645797', 'Knižnica Juraja Fándlyho', 10);
-SELECT COUNT(1) as pocet FROM reservation WHERE user_id = 0 and book_isbn='9788055606354';
+
 INSERT INTO votes(book_isbn, lib_name, user_id)
     VALUES ('9788088268567', 'Knižnica Juraja Fándlyho', 1),
     ('9788088268567', 'Knižnica Juraja Fándlyho', 2),

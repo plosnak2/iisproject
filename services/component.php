@@ -84,6 +84,22 @@ class MainComponent
         return $answer->fetch();
     }
 
+    // function that checks if user voted for specific book in library
+    function user_vote($id, $isbn, $lib)
+    {
+        $answer = $this->pdo->prepare('SELECT COUNT(1) as count FROM votes WHERE user_id =? and book_isbn=? and lib_name=?;');
+        $answer->execute(array($id, $isbn, $lib));
+        return $answer->fetch();
+    }
+
+     // function that add vote to database
+     function add_vote($id, $isbn, $lib)
+     {
+         $answer = $this->pdo->prepare('INSERT INTO votes (book_isbn, lib_name, user_id) VALUES (?,?,?)');
+         $answer->execute(array($isbn, $lib, $id));
+         return;
+     }
+
     function add_user($data)
     {
         $stmt = $this->pdo->prepare('INSERT INTO address (street, number, city, postal_code) VALUES (?, ?, ?, ?)');

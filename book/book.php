@@ -238,8 +238,32 @@ session_start();
                                 
                             } else if (($_SESSION['role'] == 1) &&($count['count'] == 0))
                             {
-                                echo '<br/>';
-                                echo '<button type="button" onclick="window.location.href='."'#". "'" . '" class="btn btn-primary" style="margin-top:10px">Hlasovať za dokúpenie</button>';
+                                $vote = $db->user_vote($_SESSION['id'], $book['isbn'], $library['name']);
+                                if(array_key_exists('button1', $_POST)) 
+                                { 
+                                    if($vote['count'] == 0)
+                                    {
+                                        $db->add_vote($_SESSION['id'], $book['isbn'], $library['name']);
+                                    } 
+                                    echo '<br/>';
+                                    echo '<form method="post"> ';
+                                    echo '<button disabled type="submit" name="button1" class="btn btn-primary" style="margin-top:10px">Už ste hlasovali za dokúpenie</button>';
+                                    echo '</form> ';
+                                } else if($vote['count'] != 0) 
+                                { 
+                                    echo '<br/>';
+                                    echo '<form method="post"> ';
+                                    echo '<button disabled type="submit" name="button1" class="btn btn-primary" style="margin-top:10px">Už ste hlasovali za dokúpenie</button>';
+                                    echo '</form> ';
+                                } else if($vote['count'] == 0)
+                                {
+                                    echo '<br/>';
+                                    echo '<form method="post"> ';
+                                    echo '<button type="submit" name="button1" class="btn btn-primary" style="margin-top:10px">Hlasovať za dokúpenie</button>';
+                                    echo '</form> ';
+                                }
+                                
+                                
                             }
                             
                         } else 
