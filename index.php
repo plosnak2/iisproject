@@ -27,23 +27,69 @@ session_start();
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                <a class="nav-link" href="./index.php" style="color: white; background-color:black; width:100px">Domov</a>
-                </li>
+            <?php
+                if(isset($_SESSION['role']))
+                {
+                    if($_SESSION['role'] == 1)
+                    {
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
+                        echo '</li>';
+                    } 
+                    else if($_SESSION['role'] == 2)
+                    {
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednávky</a>';
+                        echo '</li>';
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '</li>';
+                    }
+                    else if($_SESSION['role'] == 3)
+                    {
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
+                        echo '</li>';
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
+                        echo '</li>';
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '</li>';
+                    } 
+                    else if($_SESSION['role'] == 4)
+                    {
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
+                        echo '</li>';
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
+                        echo '</li>';
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '</li>';
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
+                        echo '</li>';
+                    }
+
+                    echo '<li class="nav-item">';
+                    echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
+                    echo '</li>';
+                }
+                ?>
                 <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px" >Profil</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Kontakt</a>
+                <a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Kontakt</a>
                 </li>
                 <li class="nav-item">
                 <?php
+                
                 if(isset($_SESSION['username']))
                 {
-                    echo '<a href="./login/logout.php"><button type="button" class="btn btn-primary" style="width:100px">Odhlásiť</button></a>';
+                    echo '<a href="./login/logout.php"><button type="button" class="btn btn-primary" style="width:120px">Odhlásiť</button></a>';
                 } else
                 {
-                    echo '<a href="./login/login.php"><button type="button" class="btn btn-primary" style="width:100px">Prihlásiť</button></a>';
+                    echo '<a href="./login/login.php"><button type="button" class="btn btn-primary" style="width:120px">Prihlásiť</button></a>';
                 }
                 ?>
                 

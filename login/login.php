@@ -60,13 +60,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                <a class="nav-link" href="../index.php" style="color: white; background-color:black; width:100px">Domov</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px" >Profil</a>
-                </li>
-                <li class="nav-item">
                 <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Kontakt</a>
                 </li>
                 <li class="nav-item">
