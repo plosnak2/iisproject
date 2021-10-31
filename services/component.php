@@ -76,6 +76,14 @@ class MainComponent
         return $answer->fetch();
     }
 
+    // function that checks if user already has reservation on specific book
+    function reservation_exists($id, $isbn)
+    {
+        $answer = $this->pdo->prepare('SELECT COUNT(1) as count FROM reservation WHERE user_id =? and book_isbn=?;');
+        $answer->execute(array($id, $isbn));
+        return $answer->fetch();
+    }
+
     function add_user($data)
     {
         $stmt = $this->pdo->prepare('INSERT INTO address (street, number, city, postal_code) VALUES (?, ?, ?, ?)');

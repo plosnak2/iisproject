@@ -188,7 +188,14 @@ session_start();
 
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Dostupnosť:</h2>
+                    <h2>Dostupnosť:
+                    <?php
+                    if(!isset($_SESSION['username']))
+                    {
+                        echo ' (Pre rezerváciu je potrebné sa prihlásiť)';
+                    }
+                    ?>
+                    </h2>
                 </div>
             </div>
             
@@ -211,7 +218,37 @@ session_start();
                         echo '<td style="vertical-align:middle"><b>'.$library['name'].'</b></td>';
                         // need to know how many pieced there is in each library of specific book
                         $count = $db->get_num_of_books_in_lib($book['isbn'], $library['name']);
-                        echo '<td style="vertical-align:middle"><b>'.$count['count'].'</b></td>';
+                        echo '<td style="vertical-align:middle"><b>'.$count['count'].'</b>';
+                        if(isset($_SESSION['username']))
+                        {
+                            if(($_SESSION['role'] == 1) &&($count['count'] > 0))
+                            {
+                                $reservation = $db->reservation_exists($_SESSION['id'], $book['isbn']);
+                                
+                                if($reservation['count'] == 0)
+                                {
+                                    echo '<br/>';
+                                    echo '<button type="button" onclick="window.location.href='."'#". "'" . '" class="btn btn-primary" style="margin-top:10px">Rezervovať</button>';
+                                    
+                                } else {
+                                    echo '<br/>';
+                                    echo '<button type="button" onclick="window.location.href='."'#". "'" . '" class="btn btn-primary" style="margin-top:10px" disabled>Aktuálne rezervované</button>';
+                                    
+                                }
+                                
+                            } else if (($_SESSION['role'] == 1) &&($count['count'] == 0))
+                            {
+                                echo '<br/>';
+                                echo '<button type="button" onclick="window.location.href='."'#". "'" . '" class="btn btn-primary" style="margin-top:10px">Hlasovať za dokúpenie</button>';
+                            }
+                            
+                        } else 
+                        {
+                            echo '<br/>';
+                            echo '<button type="button" onclick="window.location.href='."'../login/login.php". "'" . '" class="btn btn-primary" style="margin-top:10px">Prihlásiť sa</button>';
+                        }
+                           
+                        echo '</td>';
                         echo '</tr>';
                     }
                     ?>
