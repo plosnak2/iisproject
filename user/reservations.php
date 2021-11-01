@@ -1,6 +1,7 @@
 <?php
 require "../services/component.php";
 $db = new MainComponent();
+$db->auto_update_reservations();
 session_start();
 ?>
 <html>

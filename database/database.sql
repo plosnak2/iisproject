@@ -204,15 +204,13 @@ INSERT INTO availability(count, book_isbn, lib_name)
 
 INSERT INTO reservation(date_end, status, book_isbn, lib_name, user_id)
 	VALUES ('2021-11-12', 1, '9788022021609', 'Mestská knižnica', 1),
+	('2021-10-31', 1, '9788055652627', 'Knižnica Juraja Fándlyho', 1),
 	('2021-11-12', 2, '9788022021852', 'Mestská knižnica', 1),
 	(null, 3, '9788055163468', 'Knižnica Juraja Fándlyho', 1),
 	('2021-11-19', 4, '9788056603116', 'Knižnica Juraja Fándlyho', 1),
-	(null, 5, '9788022023375', 'Mestská knižnica', 1),
-	('2021-12-07', 2, '9788082340047', 'Knižnica Juraja Fándlyho', 6),
-	('2021-10-02', 2, '9788082420190', 'Knižnica Juraja Fándlyho', 7),
-	(null, 3, '9788056614464', 'Mestská knižnica', 8),
-	('2021-04-29', 1, '9788056603116', 'Mestská knižnica', 9),
-	(null, 3, '9788055645797', 'Knižnica Juraja Fándlyho', 10);
+	(null, 5, '9788022023375', 'Mestská knižnica', 1);
+
+#UPDATE reservation SET date_end=null, status=3 WHERE status=1 and current_date() > date_end;
 
 INSERT INTO votes(book_isbn, lib_name, user_id)
     VALUES ('9788088268567', 'Knižnica Juraja Fándlyho', 1),
@@ -237,6 +235,14 @@ INSERT INTO orders(count, book_isbn, lib_name, user_id)
     (1, '9788088262176', 'Mestská knižnica', 8),
     (2, '9788080902100', 'Mestská knižnica', 9),
     (3, '9788056603116', 'Mestská knižnica', 10);
+
+CREATE TRIGGER increment_count
+    AFTER UPDATE ON reservation FOR EACH ROW
+    BEGIN
+        IF OLD.status = 1 and NEW.status = 3 THEN
+            UPDATE availability SET count = count + 1 WHERE availability.book_isbn=OLD.book_isbn and availability.lib_name=OLD.lib_name;
+        end if;
+    END;
 
 /*
 SELECT EXISTS(SELECT * from votes WHERE user_id=2);
@@ -276,4 +282,5 @@ drop table availability;
 drop table reservation;
 drop table votes;
 drop table orders;
+drop trigger increment_count;
 SET FOREIGN_KEY_CHECKS=1;

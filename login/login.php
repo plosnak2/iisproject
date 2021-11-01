@@ -1,6 +1,7 @@
 <?php
 require "../services/component.php";
 $db = new MainComponent();
+$db->auto_update_reservations();
 session_start();
 
 // if user is logged in then he will be automatically redirected to main page if he tries to enter login page

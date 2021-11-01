@@ -107,6 +107,12 @@ class MainComponent
         return $answer;
     }
 
+    function auto_update_reservations()
+    {
+        $this->pdo->query('UPDATE reservation SET date_end=null, status=3 WHERE status=1 and current_date() > date_end;');
+        return;
+    }
+
     // function taht creates new reservation
     function add_reservation($isbn, $lib_name, $id)
     {
