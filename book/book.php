@@ -33,7 +33,7 @@ session_start();
                     if($_SESSION['role'] == 1)
                     {
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
+                        echo '<a class="nav-link" href="../user/reservations.php" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
                         echo '</li>';
                     } 
                     else if($_SESSION['role'] == 2)
@@ -209,6 +209,7 @@ session_start();
                 </thead>
                 <tbody>
                     <?php
+                    // generating information about availability in libraries
                     $libraries = $db->get_libs();
                     while ($library = $libraries->fetch())
                     {
@@ -221,6 +222,24 @@ session_start();
                         echo '<td style="vertical-align:middle"><b>'.$count['count'].'</b>';
                         if(isset($_SESSION['username']))
                         {
+                            // this will execute when Reserver button is clicked
+                            if(array_key_exists('reserve', $_POST))
+                            {
+                                $double_check = $db->reservation_created($_SESSION['id'], $book['isbn']);
+                                // double checking because of refreshing page (so there is not duplicities in database)
+                                if($double_check['count'] == 0)
+                                {
+                                    // adding reservation for the book by the user in a library
+                                    unset($_POST['reserve']);
+                                    $db->add_reservation($book['isbn'], $library['name'], $_SESSION['id']);
+                                    // also need to decrement number of books of specific book in a library
+                                    $db->decrement_count_in_availability($book['isbn'], $library['name']);
+
+                                    echo "<script>location.href ='../user/reservations.php'</script>";
+                                }
+                            }
+
+                            // rendering buttons depending on roles of users and availability of book
                             if(($_SESSION['role'] == 1) &&($count['count'] > 0))
                             {
                                 $reservation = $db->reservation_exists($_SESSION['id'], $book['isbn']);
@@ -228,7 +247,9 @@ session_start();
                                 if($reservation['count'] == 0)
                                 {
                                     echo '<br/>';
-                                    echo '<button type="button" onclick="window.location.href='."'#". "'" . '" class="btn btn-primary" style="margin-top:10px">Rezervovať</button>';
+                                    echo '<form method="post"> ';
+                                    echo '<button type="submit" name="reserve" class="btn btn-primary" style="margin-top:10px">Rezervovať</button>';
+                                    echo '</form> ';
                                     
                                 } else {
                                     echo '<br/>';

@@ -79,9 +79,41 @@ class MainComponent
     // function that checks if user already has reservation on specific book
     function reservation_exists($id, $isbn)
     {
-        $answer = $this->pdo->prepare('SELECT COUNT(1) as count FROM reservation WHERE user_id =? and book_isbn=?;');
+        $answer = $this->pdo->prepare('SELECT COUNT(1) as count FROM reservation WHERE user_id =? and book_isbn=? and (status=1 or status=2 or status=4);');
         $answer->execute(array($id, $isbn));
         return $answer->fetch();
+    }
+
+    // function that servers for double checking when user sends reservation
+    function reservation_created($id, $isbn)
+    {
+        $answer = $this->pdo->prepare('SELECT COUNT(1) as count FROM reservation WHERE user_id=? and book_isbn=? and status=1');
+        $answer->execute(array($id, $isbn));
+        return $answer->fetch();
+    }
+
+    function decrement_count_in_availability($isbn, $lib_name)
+    {
+        $answer = $this->pdo->prepare('UPDATE availability SET count = count - 1 WHERE book_isbn=? and lib_name=?;');
+        $answer->execute(array($isbn, $lib_name));
+        return;
+    }
+
+    // function that returns all reservation of specific user
+    function get_user_reservations($id)
+    {
+        $answer = $this->pdo->prepare('SELECT date_end, status, book_isbn, lib_name FROM reservation WHERE user_id =?;');
+        $answer->execute(array($id));
+        return $answer;
+    }
+
+    // function taht creates new reservation
+    function add_reservation($isbn, $lib_name, $id)
+    {
+        $answer = $this->pdo->prepare('INSERT INTO reservation(date_end, status, book_isbn, lib_name, user_id) VALUES( DATE_ADD(current_date(), INTERVAL 7 day),1, ?, ?, ?);
+        ');
+        $answer->execute(array($isbn, $lib_name, $id));
+        return;
     }
 
     // function that checks if user voted for specific book in library

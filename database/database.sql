@@ -57,7 +57,7 @@ CREATE TABLE availability (
 
 CREATE TABLE reservation(
     id int AUTO_INCREMENT PRIMARY KEY,
-    date_end DATETIME,
+    date_end DATE,
     status int(1),
     book_isbn VARCHAR(22),
     constraint fk_res_book FOREIGN KEY (book_isbn)
@@ -203,16 +203,16 @@ INSERT INTO availability(count, book_isbn, lib_name)
     (7, '9788056614464', 'Knižnica Juraja Fándlyho');
 
 INSERT INTO reservation(date_end, status, book_isbn, lib_name, user_id)
-	VALUES ('2021-11-12 18:44:25', 1, '9788055606354', 'Mestská knižnica', 1),
-	('2021-11-12 10:04:14', 1, '9788027507535', 'Mestská knižnica', 2),
-	('2021-08-13 15:19:19', 1, '9788022021852', 'Knižnica Juraja Fándlyho', 3),
-	('2021-02-19 07:36:50', 2, '9788055652627', 'Knižnica Juraja Fándlyho', 4),
-	('2021-06-11 09:30:42', 1, '9788022023375', 'Mestská knižnica', 5),
-	('2021-12-07 13:55:36', 2, '9788082340047', 'Knižnica Juraja Fándlyho', 6),
-	('2021-10-02 17:17:17', 2, '9788082420190', 'Knižnica Juraja Fándlyho', 7),
-	('2021-01-14 22:41:16', 3, '9788056614464', 'Mestská knižnica', 8),
-	('2021-04-29 05:35:11', 1, '9788056603116', 'Mestská knižnica', 9),
-	('2021-07-24 01:20:00', 3, '9788055645797', 'Knižnica Juraja Fándlyho', 10);
+	VALUES ('2021-11-12', 1, '9788022021609', 'Mestská knižnica', 1),
+	('2021-11-12', 2, '9788022021852', 'Mestská knižnica', 1),
+	(null, 3, '9788055163468', 'Knižnica Juraja Fándlyho', 1),
+	('2021-11-19', 4, '9788056603116', 'Knižnica Juraja Fándlyho', 1),
+	(null, 5, '9788022023375', 'Mestská knižnica', 1),
+	('2021-12-07', 2, '9788082340047', 'Knižnica Juraja Fándlyho', 6),
+	('2021-10-02', 2, '9788082420190', 'Knižnica Juraja Fándlyho', 7),
+	(null, 3, '9788056614464', 'Mestská knižnica', 8),
+	('2021-04-29', 1, '9788056603116', 'Mestská knižnica', 9),
+	(null, 3, '9788055645797', 'Knižnica Juraja Fándlyho', 10);
 
 INSERT INTO votes(book_isbn, lib_name, user_id)
     VALUES ('9788088268567', 'Knižnica Juraja Fándlyho', 1),
