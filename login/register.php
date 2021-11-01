@@ -10,17 +10,40 @@ if(isset($_SESSION['username']))
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    if(!empty(trim($_POST['name'])) && !empty(trim($_POST['mail'])) && !empty(trim($_POST['street'])) && !empty(trim($_POST['city'])) && !empty(trim($_POST['password'])) 
-    && !empty(trim($_POST['surname'])) && !empty(trim($_POST['phone'])) && !empty(trim($_POST['number'])) && !empty(trim($_POST['postal_code'])) && !empty(trim($_POST['password_confirm']))){
-        $data = $db->add_user($_POST);
+    if(!empty(trim($_POST['mail'])) && !empty(trim($_POST['password'])) && !empty(trim($_POST['password_confirm']))){
+        //check if password and password confirm are same
+        if($_POST['password'] == $_POST['password_confirm']){
+            //add null to items that are not filled in registration form   
+            foreach($_POST as $item => $value){
+                if(empty($_POST[$item])){
+                    $form_data[$item] = NULL;
+                }
+                else {
+                    $form_data[$item] = $_POST[$item];
+                }
+            }
 
-        $_SESSION["loggedin"] = true;
-        $_SESSION["id"] = $data['user_id'];
-        $_SESSION["username"] = $_POST['mail'];
-        $_SESSION["role"]= 1;
+            //check if user is in database 
+            if(!($db->mail_exist($_POST['mail']))){
+                //add user information to database
+                $data = $db->add_user($form_data);
 
-        // Redirect user to welcome page
-        header("location: ../index.php");
+                //set session information
+                $_SESSION["loggedin"] = true;
+                $_SESSION["id"] = $data['user_id'];
+                $_SESSION["username"] = $_POST['mail'];
+                $_SESSION["role"]= 1;
+
+                // Redirect user to welcome page
+                header("location: ../index.php");
+            }
+            else {
+                $error['mail'] = "Klient so zadaným e-mailom existuje!";
+            }
+        }
+        else {
+            $error['pass'] = "Heslá sa nezhodujú!";
+        }
     }
 }
 ?>
@@ -107,62 +130,68 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div id="register-column" class="col-md-6">
                         <div id="register-box" class="col-md-12">
                             <form id="register-form" class="form" action="" method="post">
-                                <h3 class="text-center text-info">Register</h3>
+                                <h3 class="text-center text-info">Registrácia</h3>
+                                <?php if(isset($error['mail'])) { ?>
+                                    <p class="errorMsg text-center" style="color: red; font-size: 15px; margin: 0;"><?php echo $error['mail'] ?></p>
+                                <?php } ?>
+                                <?php if(isset($error['pass'])) { ?>
+                                    <p class="errorMsg text-center" style="color: red; font-size: 15px; margin: 0;"><?php echo $error['pass'] ?></p>
+                                <?php } ?>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <!-- Name -->
                                             <label for="name" class="text-info">Meno:</label><br>
-                                            <input type="text" name="name" id="name" class="form-control">
+                                            <input type="text" name="name" id="name" class="form-control" value="<?php if(isset($_POST['name'])){echo $_POST['name'];}?>" pattern="[A-Z a-z]*">
 
                                             <!-- Mail -->
-                                            <label for="mail" class="text-info">E-mail:</label><br>
-                                            <input type="text" name="mail" id="mail" class="form-control">
+                                            <label for="mail" class="text-info">E-mail*:</label><br>
+                                            <input type="email" name="mail" id="mail" class="form-control" value="<?php if(isset($_POST['mail'])){echo $_POST['mail'];}?>" required>
 
                                             <!-- Street -->
                                             <label for="street" class="text-info">Ulica:</label><br>
-                                            <input type="texte" name="street" id="street" class="form-control">
+                                            <input type="text" name="street" id="street" class="form-control" value="<?php if(isset($_POST['street'])){echo $_POST['street'];}?>" pattern="[A-Z a-z]*">
 
                                             <!-- City -->
                                             <label for="city" class="text-info">Mesto:</label><br>
-                                            <input type="text" name="city" id="city" class="form-control">
+                                            <input type="text" name="city" id="city" class="form-control" value="<?php if(isset($_POST['city'])){echo $_POST['city'];}?>" pattern="[A-Z a-z]*">
 
                                             <!-- Password -->
-                                            <label for="password" class="text-info">Password:</label><br>
-                                            <input type="password" name="password" id="password" class="form-control">
+                                            <label for="password" class="text-info">Heslo*:</label><br>
+                                            <input type="password" name="password" id="password" class="form-control" required>
                                             <!--<p class="help-block" style="font-size: 10px;">Username can contain any letters or numbers, without spaces</p>-->
                                         </div>
 
                                         <div class="col-md-6">
                                             <!-- Surname -->
                                             <label for="surname" class="text-info">Priezvisko:</label><br>
-                                            <input type="text" name="surname" id="surname" class="form-control">
+                                            <input type="text" name="surname" id="surname" class="form-control" value="<?php if(isset($_POST['surname'])){echo $_POST['surname'];}?>" pattern="[A-Z a-z]*">
 
                                             <!-- Phone -->
                                             <label for="phone" class="text-info">Tel. číslo:</label><br>
-                                            <input type="text" name="phone" id="phone" class="form-control">
+                                            <input type="tel" name="phone" id="phone" class="form-control" value="<?php if(isset($_POST['phone'])){echo $_POST['phone'];}?>" pattern="[0-9]{10}" title="Formát: 0xxxxxxxxx">
 
                                             <!-- Number -->
                                             <label for="number" class="text-info">Číslo:</label><br>
-                                            <input type="text" name="number" id="number" class="form-control">
+                                            <input type="number" name="number" id="number" class="form-control" value="<?php if(isset($_POST['number'])){echo $_POST['number'];}?>">
 
                                             <!-- postal_code -->
                                             <label for="postal_code" class="text-info">PSČ:</label><br>
-                                            <input type="text" name="postal_code" id="postal_code" class="form-control">
+                                            <input type="text" name="postal_code" id="postal_code" class="form-control" value="<?php if(isset($_POST['postal_code'])){echo $_POST['postal_code'];}?>" pattern="[0-9]{5}">
 
                                             <!-- Password(Confirm) -->
-                                            <label for="password_confirm" class="text-info">Password(Confirm):</label><br>
-                                            <input type="password" name="password_confirm" id="password_confirm" class="form-control">
+                                            <label for="password_confirm" class="text-info">Heslo(znova)*:</label><br>
+                                            <input type="password" name="password_confirm" id="password_confirm" class="form-control" required>
                                         </div>
                                     </div>
                                     
                                 </div>
                         
                                 <div class="form-group">
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="Registrovať">
                                 </div>
                                 <div id="register-link" class="text-right">
-                                    <a href="./login.php" class="text-info">Login here</a>
+                                    <a href="./login.php" class="text-info">Prihlásiť tu</a>
                                 </div>
                             </form>
                         </div>

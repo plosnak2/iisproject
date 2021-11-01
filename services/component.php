@@ -121,7 +121,18 @@ class MainComponent
         }
         else
         {
-            //$this->lastError = $stmt->errorInfo();
+            return FALSE;
+        }
+    }
+
+    //function return true if user with given mail is in databse
+    function mail_exist($mail){
+        $answer = $this->pdo->prepare('SELECT mail FROM user WHERE mail=?');
+        $answer->execute(array($mail));
+        if($answer->rowCount() > 0){
+            return TRUE;
+        }
+        else {
             return FALSE;
         }
     }

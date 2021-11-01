@@ -10,8 +10,8 @@ CREATE TABLE address (
 
 CREATE TABLE user (
     id int AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30) NOT NULL,
-    surname VARCHAR(30) NOT NULL,
+    name VARCHAR(30),
+    surname VARCHAR(30),
     mail VARCHAR(50),
     phone VARCHAR(10),
     password VARCHAR(200),
