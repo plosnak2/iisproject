@@ -138,6 +138,13 @@ class MainComponent
          return;
      }
 
+    function get_book_by_isbn($isbn)
+    {
+        $answer = $this->pdo->prepare('SELECT name FROM book WHERE isbn=?');
+        $answer->execute(array($isbn));
+        return $answer->fetch();
+    }
+
     function add_user($data)
     {
         $stmt = $this->pdo->prepare('INSERT INTO address (street, number, city, postal_code) VALUES (?, ?, ?, ?)');

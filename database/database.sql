@@ -179,7 +179,7 @@ INSERT INTO availability(count, book_isbn, lib_name)
     (7, '9788080902100', 'Mestská knižnica'),
     (7, '9788082420190', 'Mestská knižnica'),
     (4, '9788055645797', 'Mestská knižnica'),
-    (6, '9788056603116', 'Mestská knižnica'),
+    (0, '9788056603116', 'Mestská knižnica'),
     (17, '9788056614464', 'Mestská knižnica'),
     (11, '9788055606354', 'Knižnica Juraja Fándlyho'),
     (5, '9788027507535', 'Knižnica Juraja Fándlyho'),
@@ -282,5 +282,4 @@ drop table availability;
 drop table reservation;
 drop table votes;
 drop table orders;
-drop trigger increment_count;
 SET FOREIGN_KEY_CHECKS=1;

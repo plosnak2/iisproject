@@ -128,164 +128,66 @@ session_start();
             <span class="sr-only">Next</span>
         </a>
     </div>
-    
+
     <?php
-    # preparing information about book
-    $book = $db->get_book($_GET['isbn']);
+    if(array_key_exists('reserve', $_POST))
+    {
+        $double_check = $db->reservation_created($_SESSION['id'], $_GET['isbn']);
+        // double checking because of refreshing page (so there is not duplicities in database)
+        if($double_check['count'] == 0)
+        {
+            // adding reservation for the book by the user in a library
+            //unset($_POST['reserve']);
+            $db->add_reservation($_GET['isbn'], $_GET['lib_name'], $_SESSION['id']);
+            // also need to decrement number of books of specific book in a library
+            $db->decrement_count_in_availability($_GET['isbn'], $_GET['lib_name']);
+
+            echo "<script>location.href ='../user/reservations.php'</script>";
+        }
+        echo "<script>location.href ='../user/reservations.php'</script>";
+    }
     ?>
 
     <div style="background-color:rgba(241,241,241,255); padding-bottom:20px; padding-top:20px">
         <div class="container">
             <div class="row">
-                <div class="col-md-5 text-center">
-                    <?php
-                    echo '<img src="../images/books/' . $book['isbn'] . '.png" style="width:20vw" />';
-                    ?>
-                </div>
-                <div class="col-md-7">
-                    <div class="row">
-                    <div class="col-md-12 text-center">
-                        <?php
-                        echo '<h2>'. $book['name'] . '</h2>';
-                        ?>
-                        <hr/>
-                    </div>
-                    
-                    <div class="col-md-12 text-center" style="margin-top:30px">
-                        <?php
-                        echo '<h4>Vydavateľ: '. $book['publisher'] . '</h4>';
-                        ?>
-                    </div>
-                    <div class="col-md-12 text-center">
-                    <?php
-                        echo '<h4>Autori: '. $book['authors'] . '</h4>';
-                    ?>
-                    </div>
-                    <div class="col-md-12 text-center">
-                    <?php
-                        echo '<h4>Rok vydania: '. $book['year'] . '</h4>';
-                    ?>
-                    </div>
-                    <div class="col-md-12 text-center">
-                    <?php
-                        echo '<h4>Žáner: '. $book['genre'] . '</h4>';
-                    ?>
-                    </div>
-                    <div class="col-md-12 text-center">
-                    <?php
-                        echo '<h4>Hodnotenie: '. $book['rating'] . '</h4>';
-                    ?>
-                    </div>
-                    <div class="col-md-12 text-center">
-                    <?php
-                        echo '<h4>ISBN: '. $book['isbn'] . '</h4>';
-                    ?>
-                    </div>
-                    </div>
+                <div class="col-md-12 text-center">
+                    <h3>Prajete si potvrdiť rezerváciu?</h3>
                 </div>
             </div>
-
-            <hr/>
-
             <div class="row">
-                <div class="col-md-12">
-                    <h2>Dostupnosť:
-                    <?php
-                    if(!isset($_SESSION['username']))
-                    {
-                        echo ' (Pre rezerváciu je potrebné sa prihlásiť)';
-                    }
-                    ?>
-                    </h2>
+                <div class="col-md-12 text-center">
+                    <img src='../images/books/<?php echo $_GET['isbn']?>.png' style="width:20vw">
                 </div>
             </div>
-            
-            <table class="table table-striped table-dark" style="margin-bottom:0px">
-                <thead class="thead-dark">
-                    <tr>
-                    <th scope="col">Knižnica</th>
-                    <th scope="col">Názov</th>
-                    <th scope="col">Počet ks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // generating information about availability in libraries
-                    $libraries = $db->get_libs();
-                    while ($library = $libraries->fetch())
-                    {
-                        $name = str_replace(' ', '', $library['name']);
-                        echo "<tr>";
-                        echo '<td> <img src="../images/libraries/'.$name.'.png" style="width:180px"/> </td>';
-                        echo '<td style="vertical-align:middle"><b>'.$library['name'].'</b></td>';
-                        // need to know how many pieced there is in each library of specific book
-                        $count = $db->get_num_of_books_in_lib($book['isbn'], $library['name']);
-                        echo '<td style="vertical-align:middle"><b>'.$count['count'].'</b>';
-                        if(isset($_SESSION['username']))
-                        {
-                            // rendering buttons depending on roles of users and availability of book
-                            if(($_SESSION['role'] == 1) &&($count['count'] > 0))
-                            {
-                                $reservation = $db->reservation_exists($_SESSION['id'], $book['isbn']);
-                                
-                                if($reservation['count'] == 0)
-                                {
-                                    echo '<br/>';
-                                    
-                                    echo '<button type="button" onclick="window.location.href='."'../user/confirm_res.php?isbn=". $book['isbn']. "&lib_name=". $library['name'] . "'" . '" class="btn btn-primary" style="margin-top:10px">Rezervovať</button>';
-                                    
-                                    
-                                } else {
-                                    echo '<br/>';
-                                    echo '<button type="button" onclick="window.location.href='."'#". "'" . '" class="btn btn-primary" style="margin-top:10px" disabled>Aktuálne rezervované</button>';
-                                    
-                                }
-                                
-                            } else if (($_SESSION['role'] == 1) &&($count['count'] == 0))
-                            {
-                                $vote = $db->user_vote($_SESSION['id'], $book['isbn'], $library['name']);
-                                if(array_key_exists('button1', $_POST)) 
-                                { 
-                                    if($vote['count'] == 0)
-                                    {
-                                        $db->add_vote($_SESSION['id'], $book['isbn'], $library['name']);
-                                    } 
-                                    echo '<br/>';
-                                    echo '<form method="post"> ';
-                                    echo '<button disabled type="submit" name="button1" class="btn btn-primary" style="margin-top:10px">Už ste hlasovali za dokúpenie</button>';
-                                    echo '</form> ';
-                                } else if($vote['count'] != 0) 
-                                { 
-                                    echo '<br/>';
-                                    echo '<form method="post"> ';
-                                    echo '<button disabled type="submit" name="button1" class="btn btn-primary" style="margin-top:10px">Už ste hlasovali za dokúpenie</button>';
-                                    echo '</form> ';
-                                } else if($vote['count'] == 0)
-                                {
-                                    echo '<br/>';
-                                    echo '<form method="post"> ';
-                                    echo '<button type="submit" name="button1" class="btn btn-primary" style="margin-top:10px">Hlasovať za dokúpenie</button>';
-                                    echo '</form> ';
-                                }
-                                
-                                
-                            }
-                            
-                        } else 
-                        {
-                            echo '<br/>';
-                            echo '<button type="button" onclick="window.location.href='."'../login/login.php". "'" . '" class="btn btn-primary" style="margin-top:10px">Prihlásiť sa</button>';
-                        }
-                           
-                        echo '</td>';
-                        echo '</tr>';
-                    }
-                    ?>
-                </tbody>
-            </table>
-            <?php
-
-            ?>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h3>
+                        Názov knihy:
+                        <?php 
+                        $name_of_book = $db->get_book_by_isbn($_GET['isbn']);
+                        echo $name_of_book['name'];
+                        ?> 
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h3>
+                        V knižnici:
+                        <?php 
+                        echo $_GET['lib_name'];
+                        ?> 
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <form method="post">
+                        <button type="submit" name="reserve" class="btn btn-primary" style="margin-top:10px">Rezervovať</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <?php
