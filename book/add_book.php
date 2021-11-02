@@ -170,7 +170,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <div class="row">
                     <div class="col-md-5 text-center">                                               
                         <h2>URL obrázku </h2>                            
-                        <input type="url" onchange="myFunction(this.value)" name="photo" id="photo" class="form-control" placeholder="Zadajte URL k obrázku s titulnou fotografiou knihy" value="<?php if(isset($_POST['photo'])){echo $_POST['photo'];}?>" required>
+                        <input type="url" onchange="myFunction()" name="photo" id="photo" class="form-control" placeholder="Zadajte URL k obrázku s titulnou fotografiou knihy" value="<?php if(isset($_POST['photo'])){echo $_POST['photo'];}?>" required>
                          <hr/>
                         <div class="col-md-12 text-center">
                                 <img id="image" alt="obrázok" src= "<?php if(isset($_POST['photo'])) {echo $_POST['photo'];} else{echo "../images/books/ref.png";}?>" style="width:20vw">
@@ -256,10 +256,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     ?>
     <!--function for setting URL to image src--> 
     <script type="text/javascript">
-        function myFunction(val) {
+        function myFunction() {
             var url = document.getElementById("photo").value;
             var image = document.getElementById('image');
-            image.src = url;
+            if(url == ""){
+                image.src = "../images/books/ref.png";
+            }
+            else{            
+                image.src = url;
+            }
         }
     </script>
     
