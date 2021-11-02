@@ -259,7 +259,6 @@ $library = $db->what_library($_SESSION['id'])['name'];
                                 }
                                 
                             }
-                            echo $final_string;
 
                             $reservations = $db->get_filtered_reservations($final_string);
                             while($reservation = $reservations->fetch())
