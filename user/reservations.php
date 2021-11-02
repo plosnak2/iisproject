@@ -9,6 +9,12 @@ if(isset($_GET['cancel_res']))
     $db->cancel_reservation($_GET['isbn'], $_GET['lib_name'], $_SESSION['id']);
     header("location: ./reservations.php");
 }
+
+if(isset($_GET['delete']))
+{
+    $db->delete_from_reservations($_GET['id_res']);
+    header("location: ./reservations.php");
+}
 ?>
 <html>
 <head>
@@ -173,6 +179,12 @@ if(isset($_GET['cancel_res']))
                     } else if ($reservation['status'] == 4)
                     {
                         echo 'Kniha mala byť vrátená: ' . $reservation['date_end'] . '<br/> IHNEĎ VRÁTIŤ';
+                    } else if ($reservation['status'] == 3)
+                    {
+                        echo '<form method="get">';
+                        echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                        echo '<button type="submit" name="delete" class="btn btn-primary" style="margin-top:10px">Vymazať</button>';
+                        echo '</form>';
                     }
                     echo '</td>';
                     echo '</tr>';

@@ -99,6 +99,7 @@ class MainComponent
         return $answer->fetch();
     }
 
+    // function that decrement bumber of books in availability table
     function decrement_count_in_availability($isbn, $lib_name)
     {
         $answer = $this->pdo->prepare('UPDATE availability SET count = count - 1 WHERE book_isbn=? and lib_name=?;');
@@ -106,14 +107,22 @@ class MainComponent
         return;
     }
 
+    function delete_from_reservations($id_res)
+    {
+        $answer = $this->pdo->prepare('DELETE FROM reservation WHERE id=?;');
+        $answer->execute(array($id_res));
+        return;
+    }
+
     // function that returns all reservation of specific user
     function get_user_reservations($id)
     {
-        $answer = $this->pdo->prepare('SELECT date_end, status, book_isbn, lib_name FROM reservation WHERE user_id =?;');
+        $answer = $this->pdo->prepare('SELECT id, date_end, status, book_isbn, lib_name FROM reservation WHERE user_id =?;');
         $answer->execute(array($id));
         return $answer;
     }
 
+    // function that is called almost every time and it updates status of reservation which runs out of time
     function auto_update_reservations()
     {
         $this->pdo->query('UPDATE reservation SET date_end=null, status=3 WHERE status=1 and current_date() > date_end;');
