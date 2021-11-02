@@ -185,6 +185,12 @@ if(isset($_GET['delete']))
                         echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
                         echo '<button type="submit" name="delete" class="btn btn-primary" style="margin-top:10px">Vymazať</button>';
                         echo '</form>';
+                    } else 
+                    {
+                        echo '<form method="get">';
+                        echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                        echo '<button type="submit" name="delete" class="btn btn-primary" style="margin-top:10px">Vymazať</button>';
+                        echo '</form>';   
                     }
                     echo '</td>';
                     echo '</tr>';
