@@ -216,7 +216,11 @@ INSERT INTO reservation(date_end, status, book_isbn, lib_name, user_id)
 	('2021-10-31', 1, '9788055652627', 'Knižnica Juraja Fándlyho', 1),
 	('2021-11-1', 2, '9788022021852', 'Mestská knižnica', 1),
 	(null, 3, '9788055163468', 'Knižnica Juraja Fándlyho', 1),
-	('2021-11-19', 4, '9788056603116', 'Knižnica Juraja Fándlyho', 1),
+	('2021-11-1', 4, '9788056603116', 'Knižnica Juraja Fándlyho', 1),
+	('2021-11-19', 4, '9788088262176', 'Knižnica Juraja Fándlyho', 3),
+	('2021-11-09', 1, '9788056614464', 'Mestská knižnica', 4),
+	('2021-11-19', 2, '9788055178714', 'Mestská knižnica', 5),
+	(null, 3, '9788022023375', 'Knižnica Juraja Fándlyho', 6),
 	(null, 5, '9788022023375', 'Mestská knižnica', 1);
 
 #UPDATE reservation SET date_end=null, status=3 WHERE status=1 and current_date() > date_end;
