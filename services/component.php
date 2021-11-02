@@ -198,6 +198,22 @@ class MainComponent
             return FALSE;
         }
     }
+
+    function book_exist($isbn){
+        $answer = $this->pdo->prepare('SELECT isbn FROM book WHERE isbn=?');
+        $answer->execute(array($isbn));
+        if($answer->rowCount() > 0){
+            return TRUE;
+        }
+        else {
+            return FALSE;
+        }
+    }
+
+    function add_book($data){
+        $stmt = $this->pdo->prepare("INSERT INTO book(isbn, name, authors, year, publisher, genre, rating) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$data['isbn'], $data['name'], $data['authors'], $data['year'], $data['publisher'], $data['genre'], $data['rating']]);
+    }
 }
 
 ?>

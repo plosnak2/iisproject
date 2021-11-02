@@ -43,7 +43,7 @@ session_start();
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednávky</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '<a class="nav-link" href="./book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                         echo '</li>';
                     }
                     else if($_SESSION['role'] == 3)
@@ -55,7 +55,7 @@ session_start();
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '<a class="nav-link" href="./book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                         echo '</li>';
                     } 
                     else if($_SESSION['role'] == 4)
@@ -67,7 +67,7 @@ session_start();
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '<a class="nav-link" href="./book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
