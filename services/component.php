@@ -126,6 +126,7 @@ class MainComponent
     function auto_update_reservations()
     {
         $this->pdo->query('UPDATE reservation SET date_end=null, status=3 WHERE status=1 and current_date() > date_end;');
+        $this->pdo->query('UPDATE reservation SET status=4 WHERE status=2 and current_date() > date_end;');
         return;
     }
 
