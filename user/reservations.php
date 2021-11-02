@@ -3,6 +3,12 @@ require "../services/component.php";
 $db = new MainComponent();
 $db->auto_update_reservations();
 session_start();
+
+if(isset($_GET['cancel_res']))
+{
+    $db->cancel_reservation($_GET['isbn'], $_GET['lib_name'], $_SESSION['id']);
+    header("location: ./reservations.php");
+}
 ?>
 <html>
 <head>
@@ -155,6 +161,12 @@ session_start();
                     if($reservation['status'] == 1)
                     {
                         echo 'Vyzdvihnúť do: ' . $reservation['date_end'];
+                        echo '<br/>';
+                        echo '<form method="get">';
+                        echo '<input type="hidden" name="isbn" value="'. $reservation['book_isbn'] . '">';
+                        echo '<input type="hidden" name="lib_name" value="'. $reservation['lib_name'] . '">';
+                        echo '<button type="submit" name="cancel_res" class="btn btn-primary" style="margin-top:10px">Zrušiť rezerváciu</button>';
+                        echo '</form>';
                     } else if ($reservation['status'] == 2)
                     {
                         echo 'Vrátiť do: ' . $reservation['date_end'];

@@ -61,6 +61,13 @@ class MainComponent
         return $answer;
     }
 
+    function cancel_reservation($isbn, $lib_name, $id)
+    {
+        $answer = $this->pdo->prepare('UPDATE reservation SET date_end=null, status=3 WHERE book_isbn=? and lib_name=? and user_id=?;');
+        $answer->execute(array($isbn, $lib_name, $id));
+        return;
+    }
+
     // function that returns libraries from database
     function get_libs()
     {
