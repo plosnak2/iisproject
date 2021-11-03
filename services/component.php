@@ -61,6 +61,13 @@ class MainComponent
         return $answer;
     }
 
+    // function that returns filtered reservations
+    function get_filtered_reservations($select)
+    {
+        $answer = $this->pdo->query($select);
+        return $answer;
+    }
+
     function cancel_reservation($isbn, $lib_name, $id)
     {
         $answer = $this->pdo->prepare('UPDATE reservation SET date_end=null, status=3 WHERE book_isbn=? and lib_name=? and user_id=?;');
@@ -126,7 +133,31 @@ class MainComponent
     function auto_update_reservations()
     {
         $this->pdo->query('UPDATE reservation SET date_end=null, status=3 WHERE status=1 and current_date() > date_end;');
+        $this->pdo->query('UPDATE reservation SET status=4 WHERE status=2 and current_date() > date_end;');
         return;
+    }
+
+    // function that returns library where works specific librarian
+    function what_library($id)
+    {
+        $answer = $this->pdo->prepare('SELECT name FROM library WHERE user_id=?;');
+        $answer->execute(array($id));
+        return $answer->fetch();
+    }
+
+    // function that returns all reservations from specific library
+    function get_reservations_in_library($lib_name)
+    {
+        $answer = $this->pdo->prepare('SELECT * FROM reservation WHERE lib_name=?;');
+        $answer->execute(array($lib_name));
+        return $answer;
+    }
+
+    function get_surname($id)
+    {
+        $answer = $this->pdo->prepare('SELECT name, surname FROM user WHERE id=?;');
+        $answer->execute(array($id));
+        return $answer->fetch();
     }
 
     // function taht creates new reservation
