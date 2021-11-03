@@ -198,6 +198,7 @@ class MainComponent
         }
     }
 
+    //function return true if book with given isbn is in database
     function book_exist($isbn){
         $answer = $this->pdo->prepare('SELECT isbn FROM book WHERE isbn=?');
         $answer->execute(array($isbn));
@@ -209,9 +210,17 @@ class MainComponent
         }
     }
 
+    //function add new book to database
     function add_book($data){
         $stmt = $this->pdo->prepare("INSERT INTO book(isbn, name, authors, year, publisher, genre, rating) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$data['isbn'], $data['name'], $data['authors'], $data['year'], $data['publisher'], $data['genre'], $data['rating']]);
+    }
+
+    //function return all users from database
+    function get_users(){
+        $answer = $this->pdo->prepare('SELECT mail, name, surname, role FROM user');
+        $answer->execute();
+        return $answer;
     }
 }
 
