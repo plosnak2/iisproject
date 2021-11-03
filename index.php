@@ -338,7 +338,7 @@ session_start();
 
                             //echo $final_string;
 
-                            $books = $db->get_filtered_books($final_string);
+                            $books = $db->get_filtered($final_string);
                             while($book = $books->fetch())
                             {
                                 echo "<tr>";

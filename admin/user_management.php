@@ -149,7 +149,7 @@ if(!isset($_SESSION['role'])){
                     <div class="form-row">
                         <div class="form-group col-md-3">
                         <label for="mail">E-mail</label>
-                        <input type="email" class="form-control" id="mail" placeholder="E-mail" name="mail" value="<?php if(isset($_GET['mail'])){echo $_GET['mail'];}?>">                        
+                        <input type="text" class="form-control" id="mail" placeholder="E-mail" name="mail" value="<?php if(isset($_GET['mail'])){echo $_GET['mail'];}?>">                        
                         </div>
 
                         <div class="form-group col-md-3">
@@ -219,8 +219,70 @@ if(!isset($_SESSION['role'])){
                                     {
                                         if($user['role'] == 1){$role = "Čitateľ";}
                                         else if($user['role'] == 2){$role = "Distribútor";}
-                                        else if($user['role'] == 2){$role = "Knihovník";}
-                                        else if($user['role'] == 2){$role = "Admin";}
+                                        else if($user['role'] == 3){$role = "Knihovník";}
+                                        else if($user['role'] == 4){$role = "Admin";}
+                                        echo "<tr>";
+                                        echo '<td style="vertical-align:middle"><b>'.$user['mail'].'</b></td>';
+                                        echo '<td style="vertical-align:middle"><b>'.$user['name'].'</b></td>';
+                                        echo '<td style="vertical-align:middle"><b>'.$user['surname'].'</b></td>';
+                                        echo '<td style="vertical-align:middle"><b>'.$role.'</b></td>';
+                                        echo '</tr>';
+                                    }
+                                }
+                                else
+                                {
+                                    $final_string = "SELECT mail, name, surname, role FROM user WHERE ";
+                                    $number_of_handled = 0;
+
+                                    if(!empty($_GET['mail']))
+                                    {
+                                        $final_string = $final_string . " mail regexp '" . $_GET['mail'] . "'";
+                                        $number_of_handled++;
+                                    }
+                                    
+                                    if(!empty($_GET['name']))
+                                    {
+                                        if($number_of_handled == 0)
+                                        {
+                                            $final_string = $final_string . " name regexp '" . $_GET['name'] . "'";
+                                        } else 
+                                        {
+                                            $final_string = $final_string . " AND name regexp '" . $_GET['name'] . "'";
+                                        }
+                                        $number_of_handled++;
+                                    }
+
+                                    if(!empty($_GET['surname']))
+                                    {
+                                        if($number_of_handled == 0)
+                                        {
+                                            $final_string = $final_string . " surname regexp '" . $_GET['surname'] . "'";
+                                        } else 
+                                        {
+                                            $final_string = $final_string . " AND surname regexp '" . $_GET['surname'] . "'";
+                                        }
+                                        $number_of_handled++;
+                                    }
+                                
+                                    if($_GET['role'] != '0')
+                                    {
+                                        if($number_of_handled == 0)
+                                        {
+                                            $final_string = $final_string . " role= '" . $_GET['role'] . "'";
+                                        } else 
+                                        {
+                                            $final_string = $final_string . " AND role= '" . $_GET['role'] . "'";
+                                        }
+                                        $number_of_handled++;                                        
+                                    }
+
+                                    $users = $db->get_filtered($final_string);
+                                    while($user = $users->fetch())
+                                    {
+                                        if($user['role'] == 1){$role = "Čitateľ";}
+                                        else if($user['role'] == 2){$role = "Distribútor";}
+                                        else if($user['role'] == 3){$role = "Knihovník";}
+                                        else if($user['role'] == 4){$role = "Admin";}
                                         echo "<tr>";
                                         echo '<td style="vertical-align:middle"><b>'.$user['mail'].'</b></td>';
                                         echo '<td style="vertical-align:middle"><b>'.$user['name'].'</b></td>';

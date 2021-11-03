@@ -260,7 +260,7 @@ $library = $db->what_library($_SESSION['id'])['name'];
                                 
                             }
 
-                            $reservations = $db->get_filtered_reservations($final_string);
+                            $reservations = $db->get_filtered($final_string);
                             while($reservation = $reservations->fetch())
                             {
                                 if($reservation['status'] == 1) $status = 'Vytvorená';

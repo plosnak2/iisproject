@@ -54,20 +54,14 @@ class MainComponent
         return $answer->fetch();
     }
 
-    // function that returns books with specific filter
-    function get_filtered_books($select)
+    // function that returns filtered values from database
+    function get_filtered($select)
     {
         $answer = $this->pdo->query($select);
         return $answer;
     }
 
-    // function that returns filtered reservations
-    function get_filtered_reservations($select)
-    {
-        $answer = $this->pdo->query($select);
-        return $answer;
-    }
-
+    // function that cancel reservation that are given by isbn, name of library and id of user
     function cancel_reservation($isbn, $lib_name, $id)
     {
         $answer = $this->pdo->prepare('UPDATE reservation SET date_end=null, status=3 WHERE book_isbn=? and lib_name=? and user_id=?;');
