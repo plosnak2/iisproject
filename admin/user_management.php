@@ -3,12 +3,13 @@ require "../services/component.php";
 $db = new MainComponent();
 $db->auto_update_reservations();
 session_start();
+if(!isset($_SESSION['id'])){
+    header("location: ../index.php");
+}
 if($_SESSION['role'] != 4){
-    header("location : ../index.php");
+    header("location: ../index.php");
 }
-if(!isset($_SESSION['role'])){
-    header("location : ../index.php");
-}
+
 ?>
 
 
@@ -74,7 +75,7 @@ if(!isset($_SESSION['role'])){
                             echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
                             echo '</li>';
                             echo '<li class="nav-item">';
-                            echo '<a class="nav-link" href="../user/add_user.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                            echo '<a class="nav-link" href="../book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                             echo '</li>';
                             echo '<li class="nav-item">';
                             echo '<a class="nav-link" href="./user_management.php" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
@@ -254,6 +255,7 @@ if(!isset($_SESSION['role'])){
                                     $users = $db->get_filtered($final_string);
                                 }
                             }
+                            
                             while($user = $users->fetch())
                             {
                                 if($user['role'] == 1){$role = "Čitateľ";}
@@ -265,6 +267,7 @@ if(!isset($_SESSION['role'])){
                                 echo '<td style="vertical-align:middle"><b>'.$user['name'].'</b></td>';
                                 echo '<td style="vertical-align:middle"><b>'.$user['surname'].'</b></td>';
                                 echo '<td style="vertical-align:middle"><b>'.$role.'</b></td>';
+                                echo '<td style="vertical-align:middle"><b> <button type="button" onclick="window.location.href='."'./change_user_role.php?mail=". $user['mail']. "&name=" . $user['name'] . "&surname=" . $user['surname'] . "&role=" . $user['role'] .  "&id=" . $user['id'] . "'" . '" class="btn btn-primary" style="margin-top:10px">Spravovať</button></b></td>';
                                 echo '</tr>';
                             }
                         ?>
@@ -272,7 +275,6 @@ if(!isset($_SESSION['role'])){
                 </table>
             </div>
         </div>
-
 
 
 

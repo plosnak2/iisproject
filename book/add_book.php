@@ -3,10 +3,10 @@ require "../services/component.php";
 $db = new MainComponent();
 $db->auto_update_reservations();
 session_start();
-if($_SESSION['role'] == 1){
+if(!isset($_SESSION['id'])){
     header("location: ../index.php");
 }
-if(!isset($_SESSION['role'])){
+if($_SESSION['role'] == 1){
     header("location: ../index.php");
 }
 if($_SERVER["REQUEST_METHOD"] == "POST"){

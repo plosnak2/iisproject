@@ -243,9 +243,28 @@ class MainComponent
 
     //function return all users from database
     function get_users(){
-        $answer = $this->pdo->prepare('SELECT mail, name, surname, role FROM user');
+        $answer = $this->pdo->prepare('SELECT id, mail, name, surname, role FROM user');
         $answer->execute();
         return $answer;
+    }
+
+    //function return libraries that do not have worker
+    function get_empty_libraries(){
+        $answer = $this->pdo->prepare('SELECT name FROM library where user_id is NULL');
+        $answer->execute();
+        return $answer;
+    }
+
+    //function return libraries where specific librarian work
+    function get_librarian_lib($user_id){
+        $answer = $this->pdo->prepare('SELECT name FROM library where user_id=?');
+        $answer->execute([$user_id]);
+        return $answer;
+    }
+
+    function update_user_role($role, $user_id){
+        $answer = $this->pdo->prepare('UPDATE user SET role = ? where id = ?');
+        $answer->execute([$role , $user_id]);
     }
 }
 
