@@ -196,38 +196,13 @@ if(!isset($_SESSION['role'])){
                     </thead>
                     <tbody>
                         <?php
+                            $users;
                             if(count($_GET) == 0){
                                 $users = $db->get_users();
-                                while($user = $users->fetch())
-                                {
-                                    if($user['role'] == 1){$role = "Čitateľ";}
-                                    else if($user['role'] == 2){$role = "Distribútor";}
-                                    else if($user['role'] == 2){$role = "Knihovník";}
-                                    else if($user['role'] == 2){$role = "Admin";}
-                                    echo "<tr>";
-                                    echo '<td style="vertical-align:middle"><b>'.$user['mail'].'</b></td>';
-                                    echo '<td style="vertical-align:middle"><b>'.$user['name'].'</b></td>';
-                                    echo '<td style="vertical-align:middle"><b>'.$user['surname'].'</b></td>';
-                                    echo '<td style="vertical-align:middle"><b>'.$role.'</b></td>';
-                                    echo '</tr>';
-                                }
                             }
                             else {
                                 if(empty($_GET['mail']) && empty($_GET['name']) && empty($_GET['surname']) && ($_GET['role'] == '0')){
                                     $users = $db->get_users();
-                                    while($user = $users->fetch())
-                                    {
-                                        if($user['role'] == 1){$role = "Čitateľ";}
-                                        else if($user['role'] == 2){$role = "Distribútor";}
-                                        else if($user['role'] == 3){$role = "Knihovník";}
-                                        else if($user['role'] == 4){$role = "Admin";}
-                                        echo "<tr>";
-                                        echo '<td style="vertical-align:middle"><b>'.$user['mail'].'</b></td>';
-                                        echo '<td style="vertical-align:middle"><b>'.$user['name'].'</b></td>';
-                                        echo '<td style="vertical-align:middle"><b>'.$user['surname'].'</b></td>';
-                                        echo '<td style="vertical-align:middle"><b>'.$role.'</b></td>';
-                                        echo '</tr>';
-                                    }
                                 }
                                 else
                                 {
@@ -277,22 +252,21 @@ if(!isset($_SESSION['role'])){
                                     }
 
                                     $users = $db->get_filtered($final_string);
-                                    while($user = $users->fetch())
-                                    {
-                                        if($user['role'] == 1){$role = "Čitateľ";}
-                                        else if($user['role'] == 2){$role = "Distribútor";}
-                                        else if($user['role'] == 3){$role = "Knihovník";}
-                                        else if($user['role'] == 4){$role = "Admin";}
-                                        echo "<tr>";
-                                        echo '<td style="vertical-align:middle"><b>'.$user['mail'].'</b></td>';
-                                        echo '<td style="vertical-align:middle"><b>'.$user['name'].'</b></td>';
-                                        echo '<td style="vertical-align:middle"><b>'.$user['surname'].'</b></td>';
-                                        echo '<td style="vertical-align:middle"><b>'.$role.'</b></td>';
-                                        echo '</tr>';
-                                    }
                                 }
                             }
-
+                            while($user = $users->fetch())
+                            {
+                                if($user['role'] == 1){$role = "Čitateľ";}
+                                else if($user['role'] == 2){$role = "Distribútor";}
+                                else if($user['role'] == 3){$role = "Knihovník";}
+                                 else if($user['role'] == 4){$role = "Admin";}
+                                echo "<tr>";
+                                echo '<td style="vertical-align:middle"><b>'.$user['mail'].'</b></td>';
+                                echo '<td style="vertical-align:middle"><b>'.$user['name'].'</b></td>';
+                                echo '<td style="vertical-align:middle"><b>'.$user['surname'].'</b></td>';
+                                echo '<td style="vertical-align:middle"><b>'.$role.'</b></td>';
+                                echo '</tr>';
+                            }
                         ?>
                     </tbody>
                 </table>
