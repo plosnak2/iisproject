@@ -147,11 +147,28 @@ class MainComponent
         return $answer;
     }
 
+    // function that returns surname of specific user
     function get_surname($id)
     {
         $answer = $this->pdo->prepare('SELECT name, surname FROM user WHERE id=?;');
         $answer->execute(array($id));
         return $answer->fetch();
+    }
+
+    // function that is used by librarian when reader comes to library to pick up book
+    function reservation_is_picked($id_res)
+    {
+        $answer = $this->pdo->prepare('UPDATE reservation SET status=2, date_end=DATE_ADD(current_date(), INTERVAL 30 day) WHERE id=?');
+        $answer->execute(array($id_res));
+        return;
+    }
+
+    // user has returned the book into a library
+    function book_returned($id_res)
+    {
+        $answer = $this->pdo->prepare('UPDATE reservation SET status=5, date_end=null WHERE id=?');
+        $answer->execute(array($id_res));
+        return;
     }
 
     // function taht creates new reservation

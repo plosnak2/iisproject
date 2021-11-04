@@ -255,6 +255,14 @@ CREATE TRIGGER increment_count
         IF OLD.status = 1 and NEW.status = 3 THEN
             UPDATE availability SET count = count + 1 WHERE availability.book_isbn=OLD.book_isbn and availability.lib_name=OLD.lib_name;
         end if;
+
+        IF OLD.status = 2 and NEW.status = 5 THEN
+            UPDATE availability SET count = count + 1 WHERE availability.book_isbn=OLD.book_isbn and availability.lib_name=OLD.lib_name;
+        end if;
+
+        IF OLD.status = 4 and NEW.status = 5 THEN
+            UPDATE availability SET count = count + 1 WHERE availability.book_isbn=OLD.book_isbn and availability.lib_name=OLD.lib_name;
+        end if;
     END;
 
 /*
