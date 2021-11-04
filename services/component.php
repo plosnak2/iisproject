@@ -262,9 +262,25 @@ class MainComponent
         return $answer;
     }
 
+    //function change role in table user
     function update_user_role($role, $user_id){
         $answer = $this->pdo->prepare('UPDATE user SET role = ? where id = ?');
         $answer->execute([$role , $user_id]);
+        return;
+    }
+
+    //function that set user to library
+    function set_library($user_id, $lib){
+        $answer = $this->pdo->prepare('UPDATE library SET user_id = ? where name = ?');
+        $answer->execute([$user_id, $lib]);
+        return;
+    }
+
+    //function that update user_id in library
+    function update_library($lib){
+        $answer = $this->pdo->prepare('UPDATE library SET user_id = NULL where name = ?');
+        $answer->execute([$lib]);
+        return;
     }
 }
 
