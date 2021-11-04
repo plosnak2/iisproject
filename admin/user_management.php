@@ -207,7 +207,7 @@ if($_SESSION['role'] != 4){
                                 }
                                 else
                                 {
-                                    $final_string = "SELECT mail, name, surname, role FROM user WHERE ";
+                                    $final_string = "SELECT id, mail, name, surname, role FROM user WHERE ";
                                     $number_of_handled = 0;
 
                                     if(!empty($_GET['mail']))

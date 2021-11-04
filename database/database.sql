@@ -145,7 +145,9 @@ INSERT INTO library(name, opening_hours, description, address_id, user_id)
     VALUES ('Mestská knižnica', '- - 07:00 18:30 07:00 18:30 07:00 18:30 07:00 18:30 08:00 17:00 08:00 17:00',
     'Zmodernizovaná knižnica v Nitre. U nás zažijete neskotučné množstvo hodín v objatí slovenskej, ale aj medzinárodnej literatúri.', 3, 2),
     ('Knižnica Juraja Fándlyho', '- - 08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00',
-    'História Knižnica Juraja Fándlyho sa začala písať v roku 1983. Za tú dobu sme navýšili počty knižných titulov. V dnešnej dobe sa snažíme zaujať organizáciou rôznzch podujatí.', 5, 7);
+    'História Knižnica Juraja Fándlyho sa začala písať v roku 1983. Za tú dobu sme navýšili počty knižných titulov. V dnešnej dobe sa snažíme zaujať organizáciou rôznzch podujatí.', 5, 7),
+    ('Univerzitná knižnica', '- - 08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00',
+    'História Knižnica Juraja Fándlyho sa začala písať v roku 1983. Za tú dobu sme navýšili počty knižných titulov. V dnešnej dobe sa snažíme zaujať organizáciou rôznzch podujatí.', 5, NULL);
 
 INSERT INTO book(isbn, name, authors, year, publisher, genre, rating)
     VALUES ('9788055606354', 'Pán prsteňov I. - Spoločenstvo prsteňa', 'J.R.R. Tolkien', 2012 , 'Slovart', 'Fantasy', 4.2),

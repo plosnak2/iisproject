@@ -31,6 +31,21 @@ $libraries = $db->get_empty_libraries();
         if($_SESSION['id'] == $_GET['id']){
             $_SESSION['role'] = $_GET['inlineRadioOptions'];
         }
+        if(($_GET['inlineRadioOptions'] == 3) && ($_GET['role'] != 3)){
+            //change librarian library or add librarian to library
+            $db->set_library($_GET['id'], $_GET['lib']);
+        }
+        if($_GET['role'] == 3){
+            $librarian_lib = $db->get_librarian_lib($_GET['id']);
+                $librarian_lib = $librarian_lib->fetch();
+            if($_GET['inlineRadioOptions'] != 3){
+                $db->update_library($librarian_lib['name']);
+            }
+            else if($_GET['inlineRadioOptions'] == 3){                
+                $db->update_library($librarian_lib['name']);
+                $db->set_library($_GET['id'], $_GET['lib']);
+            }
+        }
         header("location: ./user_management.php");
     }
 ?>
@@ -166,6 +181,7 @@ $libraries = $db->get_empty_libraries();
                         </div>
                         <form id="add-form" class="form" action="" method="get">
                             <input type="hidden" name="id" value="<?php echo $_GET['id'];?>">
+                            <input type="hidden" name="role" value="<?php echo $_GET['role'];?>">
                             <div class="row text-center">
                                 <div class="col-md-3">
                                     <input class="form-check-input" type="radio" name="inlineRadioOptions" onchange="unvisible()" id="inlineRadio1" value="1" <?php if($_GET['role'] == 1) echo "checked";?>>
@@ -176,7 +192,7 @@ $libraries = $db->get_empty_libraries();
                                     <label class="form-check-label" for="inlineRadio2">Distribútor</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" onchange="visible()" id="inlineRadio3" value="3" <?php if($_GET['role'] == 3) echo "checked";?>>
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" onchange="visible()" id="inlineRadio3" value="3" <?php if($_GET['role'] == 3) echo "checked";?><?php if(($libraries->rowCount() == 0) && ($_GET['role'] != 3)) echo "disabled"?>>
                                     <label class="form-check-label" for="inlineRadio3">Knihovník</label>
                                 </div>
                                 <div class="col-md-3">
@@ -189,7 +205,7 @@ $libraries = $db->get_empty_libraries();
                                     <h4>Pracuje v knižnici:</h4>
                                 </div>
                                 <div class="col-md-8 text-center" style="margin-top:20px">
-                                    <select name="lib" id="lib" class="form-control">
+                                    <select name="lib" id="lib" class="form-control" <?php if($libraries->rowCount() == 0) echo "disabled"?>>
                                         <?php
                                             if($_GET['role'] == 3) {echo "<option>" . $librarian_lib['name'] . "</option>";}
                                             while($library = $libraries->fetch())
