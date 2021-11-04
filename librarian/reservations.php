@@ -9,8 +9,20 @@ if($_SESSION['role'] == 1 || $_SESSION['role'] == 2){
 if(!isset($_SESSION['role'])){
     header("location: ../index.php");
 }
-// need to know in whoch library this librarian works
+// need to know in which library this librarian works
 $library = $db->what_library($_SESSION['id'])['name'];
+
+if(isset($_GET['picked']))
+{
+    $db->reservation_is_picked($_GET['id_res']);
+    header("location: ./reservations.php");
+}
+
+if(isset($_GET['returned']))
+{
+    $db->book_returned($_GET['id_res']);
+    header("location: ./reservations.php");
+}
 ?>
 
 <html>
@@ -149,7 +161,7 @@ $library = $db->what_library($_SESSION['id'])['name'];
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">ID čitateľa</label>
-                        <input type="text" class="form-control" id="inputEmail4" placeholder="Názov knihy" name="reader" 
+                        <input type="number" class="form-control" id="inputEmail4" placeholder="ID Čitateľa" name="reader" 
                         <?php 
                         if(count($_GET) == 0)
                         {
@@ -212,7 +224,36 @@ $library = $db->what_library($_SESSION['id'])['name'];
 
                             echo "<tr>";
                             echo '<td> <img src="../images/books/'.$reservation['book_isbn'].'.png" style="width:10vw"/> </td>';
-                            echo '<td style="vertical-align:middle"><b>'. $status , '</b></td>';
+                            echo '<td style="vertical-align:middle"><b>'. $status;
+                            if($reservation['status'] == 1)
+                            {
+                                echo '<br/> Vyzdvihnúť do: ';
+                                echo $reservation['date_end'];
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="picked" class="btn btn-primary" style="margin-top:10px">Vyzdvihnutá</button>';
+                                echo '</form>';
+                            } else if ($reservation['status'] == 2)
+                            {
+                                // reservation is in state when reader has book at home, so i need to display date when resrevation is ending
+                                echo '<br/> Vrátiť do: ';
+                                echo $reservation['date_end'];
+                                // also i need to add button that signals that reader returned the book to library so i need to change status to 5
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="returned" class="btn btn-primary" style="margin-top:10px">Vrátená</button>';
+                                echo '</form>';
+                            } else if ($reservation['status'] == 4)
+                            {
+                                // if reservation is in status 4 -> that means that reader forgot to return book in a specific time
+                                echo '<br/> Kniha mala byť vrátená: ';
+                                echo $reservation['date_end'];
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="returned" class="btn btn-primary" style="margin-top:10px">Zaplatil pokutu a vrátil</button>';
+                                echo '</form>';
+                            }
+                            echo '</b></td>';
                             echo '<td style="vertical-align:middle"><br>' . $reservation['user_id'] . '</br>' . $name . ' ' .$surname . '</b></td>';
                             echo '</tr>';
                         }
@@ -222,22 +263,51 @@ $library = $db->what_library($_SESSION['id'])['name'];
                         {
                             $reservations = $db->get_reservations_in_library($library);
                             while($reservation = $reservations->fetch())
+                        {
+                            if($reservation['status'] == 1) $status = 'Vytvorená';
+                            else if ($reservation['status'] == 2) $status = 'Vyzdvihnutá';
+                            else if ($reservation['status'] == 3) $status = 'Zrušená';
+                            else if ($reservation['status'] == 4) $status = 'Po splatnosti';
+                            else $status = 'Vrátená';
+
+                            $name = $db->get_surname($reservation['user_id'])['name'];
+                            $surname = $db->get_surname($reservation['user_id'])['surname'];
+
+                            echo "<tr>";
+                            echo '<td> <img src="../images/books/'.$reservation['book_isbn'].'.png" style="width:10vw"/> </td>';
+                            echo '<td style="vertical-align:middle"><b>'. $status;
+                            if($reservation['status'] == 1)
                             {
-                                if($reservation['status'] == 1) $status = 'Vytvorená';
-                                else if ($reservation['status'] == 2) $status = 'Vyzdvihnutá';
-                                else if ($reservation['status'] == 3) $status = 'Zrušená';
-                                else if ($reservation['status'] == 4) $status = 'Po splatnosti';
-                                else $status = 'Vrátená';
-
-                                $name = $db->get_surname($reservation['user_id'])['name'];
-                                $surname = $db->get_surname($reservation['user_id'])['surname'];
-
-                                echo "<tr>";
-                                echo '<td> <img src="../images/books/'.$reservation['book_isbn'].'.png" style="width:10vw"/> </td>';
-                                echo '<td style="vertical-align:middle"><b>'. $status , '</b></td>';
-                                echo '<td style="vertical-align:middle"><br>' . $reservation['user_id'] . '</br>' . $name . ' ' .$surname . '</b></td>';
-                                echo '</tr>';
+                                echo '<br/> Vyzdvihnúť do: ';
+                                echo $reservation['date_end'];
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="picked" class="btn btn-primary" style="margin-top:10px">Vyzdvihnutá</button>';
+                                echo '</form>';
+                            } else if ($reservation['status'] == 2)
+                            {
+                                // reservation is in state when reader has book at home, so i need to display date when resrevation is ending
+                                echo '<br/> Vrátiť do: ';
+                                echo $reservation['date_end'];
+                                // also i need to add button that signals that reader returned the book to library so i need to change status to 5
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="returned" class="btn btn-primary" style="margin-top:10px">Vrátená</button>';
+                                echo '</form>';
+                            } else if ($reservation['status'] == 4)
+                            {
+                                // if reservation is in status 4 -> that means that reader forgot to return book in a specific time
+                                echo '<br/> Kniha mala byť vrátená: ';
+                                echo $reservation['date_end'];
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="returned" class="btn btn-primary" style="margin-top:10px">Zaplatil pokutu a vrátil</button>';
+                                echo '</form>';
                             }
+                            echo '</b></td>';
+                            echo '<td style="vertical-align:middle"><br>' . $reservation['user_id'] . '</br>' . $name . ' ' .$surname . '</b></td>';
+                            echo '</tr>';
+                        }
                         } else
                         {
                             $final_string = "SELECT * FROM reservation WHERE lib_name='" . $library . "'";
@@ -262,22 +332,51 @@ $library = $db->what_library($_SESSION['id'])['name'];
 
                             $reservations = $db->get_filtered($final_string);
                             while($reservation = $reservations->fetch())
+                        {
+                            if($reservation['status'] == 1) $status = 'Vytvorená';
+                            else if ($reservation['status'] == 2) $status = 'Vyzdvihnutá';
+                            else if ($reservation['status'] == 3) $status = 'Zrušená';
+                            else if ($reservation['status'] == 4) $status = 'Po splatnosti';
+                            else $status = 'Vrátená';
+
+                            $name = $db->get_surname($reservation['user_id'])['name'];
+                            $surname = $db->get_surname($reservation['user_id'])['surname'];
+
+                            echo "<tr>";
+                            echo '<td> <img src="../images/books/'.$reservation['book_isbn'].'.png" style="width:10vw"/> </td>';
+                            echo '<td style="vertical-align:middle"><b>'. $status;
+                            if($reservation['status'] == 1)
                             {
-                                if($reservation['status'] == 1) $status = 'Vytvorená';
-                                else if ($reservation['status'] == 2) $status = 'Vyzdvihnutá';
-                                else if ($reservation['status'] == 3) $status = 'Zrušená';
-                                else if ($reservation['status'] == 4) $status = 'Po splatnosti';
-                                else $status = 'Vrátená';
-
-                                $name = $db->get_surname($reservation['user_id'])['name'];
-                                $surname = $db->get_surname($reservation['user_id'])['surname'];
-
-                                echo "<tr>";
-                                echo '<td> <img src="../images/books/'.$reservation['book_isbn'].'.png" style="width:10vw"/> </td>';
-                                echo '<td style="vertical-align:middle"><b>'. $status , '</b></td>';
-                                echo '<td style="vertical-align:middle"><br>' . $reservation['user_id'] . '</br>' . $name . ' ' .$surname . '</b></td>';
-                                echo '</tr>';
+                                echo '<br/> Vyzdvihnúť do: ';
+                                echo $reservation['date_end'];
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="picked" class="btn btn-primary" style="margin-top:10px">Vyzdvihnutá</button>';
+                                echo '</form>';
+                            } else if ($reservation['status'] == 2)
+                            {
+                                // reservation is in state when reader has book at home, so i need to display date when resrevation is ending
+                                echo '<br/> Vrátiť do: ';
+                                echo $reservation['date_end'];
+                                // also i need to add button that signals that reader returned the book to library so i need to change status to 5
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="returned" class="btn btn-primary" style="margin-top:10px">Vrátená</button>';
+                                echo '</form>';
+                            } else if ($reservation['status'] == 4)
+                            {
+                                // if reservation is in status 4 -> that means that reader forgot to return book in a specific time
+                                echo '<br/> Kniha mala byť vrátená: ';
+                                echo $reservation['date_end'];
+                                echo '<form method="get">';
+                                echo '<input type="hidden" name="id_res" value="'. $reservation['id'] . '">';
+                                echo '<button type="submit" name="returned" class="btn btn-primary" style="margin-top:10px">Zaplatil pokutu a vrátil</button>';
+                                echo '</form>';
                             }
+                            echo '</b></td>';
+                            echo '<td style="vertical-align:middle"><br>' . $reservation['user_id'] . '</br>' . $name . ' ' .$surname . '</b></td>';
+                            echo '</tr>';
+                        }
                         }
                     }
                     ?>
