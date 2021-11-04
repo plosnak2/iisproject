@@ -147,6 +147,11 @@ class MainComponent
         return $answer;
     }
 
+    function get_reservations_in_all_libraries(){
+        $answer = $this->pdo->query('SELECT * FROM reservation;');
+        return $answer;
+    }
+
     // function that returns surname of specific user
     function get_surname($id)
     {

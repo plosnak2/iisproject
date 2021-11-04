@@ -3,14 +3,12 @@ require "../services/component.php";
 $db = new MainComponent();
 $db->auto_update_reservations();
 session_start();
-if($_SESSION['role'] == 1 || $_SESSION['role'] == 2 || $_SESSION['role'] == 4){
+if($_SESSION['role'] != 4){
     header("location: ../index.php");
 }
 if(!isset($_SESSION['role'])){
     header("location: ../index.php");
 }
-// need to know in which library this librarian works
-$library = $db->what_library($_SESSION['id'])['name'];
 
 if(isset($_GET['picked']))
 {
@@ -87,10 +85,10 @@ if(isset($_GET['returned']))
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '<a class="nav-link" href="../book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
+                        echo '<a class="nav-link" href="./user_management.php" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
                         echo '</li>';
                     }
 
@@ -153,13 +151,13 @@ if(isset($_GET['returned']))
         <div class="container" style="background-color:rgba(241,241,241,255); padding-top:20px">
             <div class="form-row">
                 <div class="form-group col-md-12">
-                    <h3>Rezervácie v knižnici: <?php echo $library;?></h3>
+                    <h3>Rezervácie</h3>
                     <hr>
                 </div>
             </div>
             <form method='get'>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inputEmail4">ID čitateľa</label>
                         <input type="number" class="form-control" id="inputEmail4" placeholder="ID Čitateľa" name="reader" 
                         <?php 
@@ -175,7 +173,7 @@ if(isset($_GET['returned']))
                         }
                         ?>>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inputEmail4">Stav rezervácie</label>
                         <select id="inputState" class="form-control" name="status">
                         <option selected>-</option>
@@ -184,6 +182,24 @@ if(isset($_GET['returned']))
                         <option <?php if(count($_GET) != 0 && $_GET['status'] == 'Zrušená'){echo 'selected';}?>>Zrušená</option>
                         <option <?php if(count($_GET) != 0 && $_GET['status'] == 'Po splatnosti'){echo 'selected';}?>>Po splatnosti</option>
                         <option <?php if(count($_GET) != 0 && $_GET['status'] == 'Vrátená'){echo 'selected';}?>>Vrátená</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputEmail4">V knižnici</label>
+                        <select id="inputState" class="form-control" name="lib">
+                        <option selected>-</option>
+                        <?php
+                        $libs = $db->get_libs();
+                        while($lib = $libs->fetch())
+                        {
+                            echo "<option";
+                            if(count($_GET) != 0 && $_GET['lib'] == $lib['name'])
+                            {
+                                echo " selected";
+                            }
+                            echo ">".$lib['name']."</option>";
+                        } 
+                        ?>
                         </select>
                     </div>
                 </div>
@@ -201,6 +217,7 @@ if(isset($_GET['returned']))
                 <thead class="thead-dark">
                     <tr>
                     <th scope="col">Kniha</th>
+                    <th scope="col">Knižnica</th>
                     <th scope="col">Stav</th>
                     <th scope="col">ID</th>
                     </tr>
@@ -210,7 +227,7 @@ if(isset($_GET['returned']))
                     if(!isset($_GET['submit']))
                     {
                         // when filter is not applied then i have to list all reservations from system in library in which this librarian works in
-                        $reservations = $db->get_reservations_in_library($library);
+                        $reservations = $db->get_reservations_in_all_libraries();
                         while($reservation = $reservations->fetch())
                         {
                             if($reservation['status'] == 1) $status = 'Vytvorená';
@@ -224,6 +241,7 @@ if(isset($_GET['returned']))
 
                             echo "<tr>";
                             echo '<td> <img src="../images/books/'.$reservation['book_isbn'].'.png" style="width:10vw"/> </td>';
+                            echo '<td style="vertical-align:middle"><b>'. $reservation['lib_name'] .'</b></td>';
                             echo '<td style="vertical-align:middle"><b>'. $status;
                             if($reservation['status'] == 1)
                             {
@@ -259,9 +277,9 @@ if(isset($_GET['returned']))
                         }
                     } else
                     {
-                        if(empty($_GET['reader']) && $_GET['status'] == '-')
+                        if(empty($_GET['reader']) && $_GET['status'] == '-' && $_GET['lib'] == '-')
                         {
-                            $reservations = $db->get_reservations_in_library($library);
+                            $reservations = $db->get_reservations_in_all_libraries();
                             while($reservation = $reservations->fetch())
                         {
                             if($reservation['status'] == 1) $status = 'Vytvorená';
@@ -275,6 +293,7 @@ if(isset($_GET['returned']))
 
                             echo "<tr>";
                             echo '<td> <img src="../images/books/'.$reservation['book_isbn'].'.png" style="width:10vw"/> </td>';
+                            echo '<td style="vertical-align:middle"><b>'. $reservation['lib_name'] .'</b></td>';
                             echo '<td style="vertical-align:middle"><b>'. $status;
                             if($reservation['status'] == 1)
                             {
@@ -310,10 +329,12 @@ if(isset($_GET['returned']))
                         }
                         } else
                         {
-                            $final_string = "SELECT * FROM reservation WHERE lib_name='" . $library . "'";
+                            $final_string = "SELECT * FROM reservation WHERE";
+                            $counter = 0;
                             if(!empty($_GET['reader']))
                             {
-                                $final_string = $final_string . " and user_id=" . $_GET['reader'];
+                                $final_string = $final_string . " user_id=" . $_GET['reader'];
+                                $counter++;
                             }
 
                             if(!empty($_GET['status']))
@@ -325,11 +346,33 @@ if(isset($_GET['returned']))
                                     else if($_GET['status'] == 'Zrušená') $st = 3;
                                     else if($_GET['status'] == 'Po splatnosti') $st = 4;
                                     else $st = 5;
-                                    $final_string = $final_string . " and status=" . $st;
+
+                                    if($counter == 0)
+                                    {
+                                        $final_string = $final_string . " status=" . $st;
+                                    } else 
+                                    {
+                                        $final_string = $final_string . " and status=" . $st;
+                                    }
+                                    $counter++;                                    
                                 }
                                 
                             }
 
+                            if(!empty($_GET['lib']))
+                            {
+                                if($_GET['lib'] != '-')
+                                {
+                                    if($counter == 0)
+                                    {
+                                        $final_string = $final_string . " lib_name='" . $_GET['lib'] . "'";
+                                    } else 
+                                    {
+                                        $final_string = $final_string . " and lib_name='" . $_GET['lib'] . "'";
+                                    }                                    
+                                }
+                                
+                            }
                             $reservations = $db->get_filtered($final_string);
                             while($reservation = $reservations->fetch())
                             {
@@ -344,6 +387,7 @@ if(isset($_GET['returned']))
 
                                 echo "<tr>";
                                 echo '<td> <img src="../images/books/'.$reservation['book_isbn'].'.png" style="width:10vw"/> </td>';
+                                echo '<td style="vertical-align:middle"><b>'. $reservation['lib_name'] .'</b></td>';
                                 echo '<td style="vertical-align:middle"><b>'. $status;
                                 if($reservation['status'] == 1)
                                 {
