@@ -147,9 +147,24 @@ class MainComponent
         return $answer;
     }
 
+    // function that returns all reservations from all libs
     function get_reservations_in_all_libraries(){
         $answer = $this->pdo->query('SELECT * FROM reservation;');
         return $answer;
+    }
+
+    function get_user($id)
+    {
+        $answer = $this->pdo->prepare('SELECT * FROM user WHERE id=?;');
+        $answer->execute(array($id));
+        return $answer->fetch();
+    }
+
+    function get_user_address($id)
+    {
+        $answer = $this->pdo->prepare('SELECT * FROM address WHERE id=?;');
+        $answer->execute(array($id));
+        return $answer->fetch();
     }
 
     // function that returns surname of specific user
@@ -201,11 +216,35 @@ class MainComponent
          return;
      }
 
+    // function that returns name of book by isbn
     function get_book_by_isbn($isbn)
     {
         $answer = $this->pdo->prepare('SELECT name FROM book WHERE isbn=?');
         $answer->execute(array($isbn));
         return $answer->fetch();
+    }
+
+    // function for updating profile info without new password
+    function update_user($data, $address_id, $id)
+    {
+        $stmt = $this->pdo->prepare('UPDATE address SET street=?, number=?, city=?, postal_code=? WHERE id=?');
+        $stmt->execute([$data['street'], $data['number'], $data['city'], $data['postal_code'], $address_id]);
+        unset($stmt);
+        $stmt = $this->pdo->prepare('UPDATE user SET name=?, surname=?, mail=?, phone=? WHERE id=?');
+        $stmt->execute([$data['name'], $data['surname'], $data['mail'], $data['phone'], $id]);
+        return;
+    }
+
+    // function for updating profile info with new password
+    function update_user_and_pass($data, $address_id, $id)
+    {
+        $stmt = $this->pdo->prepare('UPDATE address SET street=?, number=?, city=?, postal_code=? WHERE id=?');
+        $stmt->execute([$data['street'], $data['number'], $data['city'], $data['postal_code'], $address_id]);
+        unset($stmt);
+        $pwd = password_hash($data['pass'], PASSWORD_DEFAULT);
+        $stmt = $this->pdo->prepare('UPDATE user SET name=?, surname=?, mail=?, phone=?, password=? WHERE id=?');
+        $stmt->execute([$data['name'], $data['surname'], $data['mail'], $data['phone'], $pwd, $id]);
+        return;
     }
 
     function add_user($data)
@@ -231,6 +270,14 @@ class MainComponent
         {
             return FALSE;
         }
+    }
+
+    // function that returns my actual mail
+    function my_mail($id)
+    {
+        $answer = $this->pdo->prepare('SELECT mail FROM user WHERE id=?');
+        $answer->execute(array($id));
+        return $answer->fetch();
     }
 
     //function return true if user with given mail is in databse

@@ -75,7 +75,7 @@ session_start();
                     }
 
                     echo '<li class="nav-item">';
-                    echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
+                    echo '<a class="nav-link" href="./shared/profile.php" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
                     echo '</li>';
                 }
                 ?>
