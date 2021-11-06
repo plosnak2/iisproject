@@ -108,6 +108,13 @@ class MainComponent
         return;
     }
 
+    function update_availability($isbn, $lib_name, $count)
+    {
+        $answer = $this->pdo->prepare('UPDATE availability SET count = count + ? WHERE book_isbn=? and lib_name=?;');
+        $answer->execute(array($count, $isbn, $lib_name));
+        return;
+    }
+
     function delete_from_reservations($id_res)
     {
         $answer = $this->pdo->prepare('DELETE FROM reservation WHERE id=?;');
