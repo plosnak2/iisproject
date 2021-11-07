@@ -111,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 }
                 ?>
                 <li class="nav-item">
-                <a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Kontakt</a>
+                <a class="nav-link" href="../shared/contact.php" style="text-align:center; color: white; background-color:black; width:120px">Kontakt</a>
                 </li>
                 <li class="nav-item">
                 <?php

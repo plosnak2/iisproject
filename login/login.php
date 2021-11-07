@@ -69,7 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <a class="nav-link" href="#" style="color: white; background-color:black; width:100px">Kontakt</a>
+                <a class="nav-link" href="../shared/contact.php" style="color: white; background-color:black; width:100px">Kontakt</a>
                 </li>
                 <li class="nav-item">
                 <?php

@@ -378,6 +378,13 @@ class MainComponent
         $answer->execute([$lib]);
         return;
     }
+
+    //function return specific library
+    function get_lib($name){
+        $answer = $this->pdo->prepare('SELECT * FROM library where name=?');
+        $answer->execute([$name]);
+        return $answer->fetch();
+    }
 }
 
 ?>

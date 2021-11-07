@@ -3,29 +3,6 @@ require "../services/component.php";
 $db = new MainComponent();
 $db->auto_update_reservations();
 session_start();
-if(!isset($_SESSION['id'])){
-    header("location: ../index.php");
-}
-if($_SESSION['role'] != 4){
-    header("location: ../index.php");
-}
-
-if(isset($_GET['submit']))
-{
-    // code that applies when submit button is clicked
-    
-    //check if there is book with this isbn in database
-    if($db->book_exist($_GET['isbn']))
-    {
-        $db->update_availability($_GET['isbn'], $_GET['lib'], $_GET['count']);
-        header("location: ../book/book.php?isbn=" . $_GET['isbn']);
-    } else
-    {
-        $error['isbn'] = "Kniha so zadaným isbn neexistuje!";
-    }
-
-    
-}
 ?>
 
 <html>
@@ -66,7 +43,7 @@ if(isset($_GET['submit']))
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednávky</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="./add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                         echo '</li>';
                     }
                     else if($_SESSION['role'] == 3)
@@ -78,32 +55,32 @@ if(isset($_GET['submit']))
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="../book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                         echo '</li>';
                     } 
                     else if($_SESSION['role'] == 4)
                     {
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="./reservations.php" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
+                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Pridať</a>';
+                        echo '<a class="nav-link" href="../admin/add_books.php" style="text-align:center; color: white; background-color:black; width:120px">Pridať</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="../book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                        echo '<a class="nav-link" href="./add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="./user_management.php" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
+                        echo '<a class="nav-link" href="../admin/user_management.php" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
                         echo '</li>';
                     }
 
                     echo '<li class="nav-item">';
-                    echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
+                    echo '<a class="nav-link" href="../shared/profile.php" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
                     echo '</li>';
                 }
                 ?>
                 <li class="nav-item">
-                <a class="nav-link" href="../shared/contact.php" style="text-align:center; color: white; background-color:black; width:120px">Kontakt</a>
+                <a class="nav-link" href="./contact.php" style="text-align:center; color: white; background-color:black; width:120px">Kontakt</a>
                 </li>
                 <li class="nav-item">
                 <?php
@@ -151,57 +128,92 @@ if(isset($_GET['submit']))
             <span class="sr-only">Next</span>
         </a>
     </div>
+    
+    <?php
+    $lib = $db->get_lib($_GET['lib_name']);
+    $name = str_replace(' ', '', $_GET['lib_name']);
+    if($lib['user_id'] != NULL)
+        $librarian = $db->get_surname($lib['user_id']);
+    else {
+        $librarian['name'] = '';
+        $librarian['surname'] = '';
+    }
+    if ($lib['address_id'] != NULL){
+        $address_tmp = $db->get_user_address($lib['address_id']);
+        $address = $address_tmp['street'] . ", " . $address_tmp['number'] . ", " . $address_tmp['postal_code'] . ", " . $address_tmp['city'];
+    }
+    else
+        $address = '';
 
-    <div style="background-color:rgba(241,241,241,255); padding-bottom:20px">
-        <div class="container" style="background-color:rgba(241,241,241,255); padding-top:20px">
+    $hours = explode(' ', $lib['opening_hours']);
+    ?>
+
+    <div style="background-color:rgba(241,241,241,255); padding-bottom:20px; padding-top:20px">
+        <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center">
-                    <h3>Pridať knihy do knižnice</h3>
-                    <?php if(isset($error['isbn'])) { ?>
-                        <p class="errorMsg text-center" style="color: red; font-size: 15px; margin: 0;"><?php echo $error['isbn'] ?></p>
-                    <?php } ?>
+                <div class="col-md-5 text-center" style="margin: auto;">
+                    <?php
+                    echo '<img src="../images/libraries/' . $name . '.png" style="width:20vw" />';
+                    ?>
+                </div>
+                <div class="col-md-7">
+                    <div class="row">
+                    <div class="col-md-12 text-center">
+                        <?php
+                        echo '<h2>'. $lib['name'] . '</h2>';
+                        ?>
+                        <hr/>
+                    </div>
+                    
+                    <div class="col-md-12 text-center" style="margin-top:30px">
+                        <?php
+                        echo '<h4>Knihovník: '. $librarian['name'] . " " . $librarian['surname'] . '</h4>';
+                        ?>
+                    </div>
+                    <div class="col-md-12 text-center">
+                    <?php
+                        echo '<h4>Adresa: '. $address . '</h4>';
+                    ?>
+                    </div>
+                    <div class="col-md-12 text-center">
+                    <?php
+                        echo '<h4>Informácie: </h4>'. $lib['description'];
+                    ?>
+                    </div>
+                    <div class="col-md-12 text-center">
+                    <?php
+                        echo '<h4>Otváracie hodiny: </h4>';
+                        foreach($hours as $hour => $val) {
+                            if($val == "-")
+                                $val = "Zatvorené";
+                            if($hour == 1)
+                                echo "Pondelok: $val_before - $val<br>";
+                            if($hour == 3)
+                                echo "Utorok: $val_before - $val<br>";
+                            if($hour == 5)
+                                echo "Streda: $val_before - $val<br>";
+                            if($hour == 7)
+                                echo "Štvrtok: $val_before - $val<br>";
+                            if($hour == 9)
+                                echo "Piatok: $val_before - $val<br>";
+                            if($hour == 11)
+                                echo "Sobota: $val_before - $val<br>";
+                            if($hour == 13)
+                                echo "Nedeľa: $val_before - $val<br>";
+                            $val_before = $val;
+                          }
+                    ?>
+                    </div>
+                    </div>
+                    </div>
                 </div>
             </div>
-            <form method="get">
-                <div class="row" style="justify-content:center">
-                    <div class="col-md-6 text-center">
-                        <label>ISBN knihy</label>
-                        <input type="text" name="isbn" id="isbn" class="form-control" required />
-                    </div>
-                </div>
-                <div class="row" style="justify-content:center">
-                    <div class="col-md-6 text-center">
-                        <label>Knižnica</label>
-                        <select id="inputState" class="form-control" name="lib">
-                        <?php
-                        $libs = $db->get_libs();
-                        while($lib = $libs->fetch())
-                        {
-                            echo '<option>'. $lib['name'] .'</option>';
-                        }
-                        ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="row" style="justify-content:center">
-                    <div class="col-md-6 text-center">
-                        <label>Počet kníh</label>
-                        <input type="number" name="count" id="count" class="form-control" required  min="1"/>
-                    </div>
-                </div>
-                <div class="row" style="justify-content:center; margin-top:20px">
-                    <div class="col-md-6 text-center">
-                        <input type="submit" name="submit" class="btn btn-info btn-md" value="Pridať do knižnice" required>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
+            </div>
+    </div>
     <?php
     include '../static/footer.php';
     ?>
-    
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
