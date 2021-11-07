@@ -82,7 +82,7 @@ if(isset($_GET['returned']))
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
+                        echo '<a class="nav-link" href="./add_books.php" style="text-align:center; color: white; background-color:black; width:120px">Pridať</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
                         echo '<a class="nav-link" href="../book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
@@ -93,7 +93,7 @@ if(isset($_GET['returned']))
                     }
 
                     echo '<li class="nav-item">';
-                    echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
+                    echo '<a class="nav-link" href="../shared/profile.php" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
                     echo '</li>';
                 }
                 ?>
@@ -432,19 +432,6 @@ if(isset($_GET['returned']))
     <?php
     include '../static/footer.php';
     ?>
-    <!--function for setting URL to image src--> 
-    <script type="text/javascript">
-        function myFunction() {
-            var url = document.getElementById("photo").value;
-            var image = document.getElementById('image');
-            if(url == ""){
-                image.src = "../images/books/ref.png";
-            }
-            else{            
-                image.src = url;
-            }
-        }
-    </script>
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

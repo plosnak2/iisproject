@@ -75,7 +75,7 @@ if(isset($_GET['delete']))
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
+                        echo '<a class="nav-link" href="../admin/add_books.php" style="text-align:center; color: white; background-color:black; width:120px">Pridať</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
                         echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
@@ -86,7 +86,7 @@ if(isset($_GET['delete']))
                     }
 
                     echo '<li class="nav-item">';
-                    echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
+                    echo '<a class="nav-link" href="../shared/profile.php" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
                     echo '</li>';
                 }
                 ?>
