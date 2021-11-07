@@ -40,7 +40,7 @@ session_start();
                     else if($_SESSION['role'] == 2)
                     {
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednávky</a>';
+                        echo '<a class="nav-link" href="./orders/orders.php" style="text-align:center; color: white; background-color:black; width:120px">Objednávky</a>';
                         echo '</li>';
                         echo '<li class="nav-item">';
                         echo '<a class="nav-link" href="./book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
