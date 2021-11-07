@@ -152,6 +152,12 @@ class MainComponent
         return $answer;
     }
 
+    // function that returns all orders from all libraries
+    function get_orders_in_all_libraries() {
+        $answer = $this->pdo->query('SELECT * FROM orders;');
+        return $answer;
+    }
+
     // function that returns surname of specific user
     function get_surname($id)
     {
@@ -173,6 +179,20 @@ class MainComponent
     {
         $answer = $this->pdo->prepare('UPDATE reservation SET status=5, date_end=null WHERE id=?');
         $answer->execute(array($id_res));
+        return;
+    }
+
+    function order_done($count, $lib_name, $isbn)
+    {
+        $answer = $this->pdo->prepare('UPDATE availability SET count = count + ? WHERE book_isbn=? and lib_name=?;');
+        $answer->execute(array($count, $isbn, $lib_name));
+        return;
+    }
+
+    function delete_from_order($id_ord)
+    {
+        $answer = $this->pdo->prepare('DELETE FROM orders WHERE id=?;');
+        $answer->execute(array($id_ord));
         return;
     }
 
