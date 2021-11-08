@@ -23,6 +23,29 @@ class MainComponent
         return $answer;
     }
 
+    // function that returns distinct isbns of books in lib_name library 
+    function get_unique_book_isbn($lib_name)
+    {
+        $answer = $this->pdo->prepare('SELECT DISTINCT book_isbn FROM votes WHERE lib_name=?;');
+        $answer->execute(array($lib_name));
+        return $answer;
+    }
+
+    // function that retru nnumber of votes for specific book in specific library
+    function num_of_votes($isbn, $lib_name)
+    {
+        $answer = $this->pdo->prepare('SELECT COUNT(book_isbn) as count FROM votes WHERE lib_name=? and book_isbn=?;');
+        $answer->execute(array($lib_name, $isbn));
+        return $answer->fetch();
+    }
+
+    function create_order($count, $isbn, $lib_name, $user_id)
+    {
+        $answer = $this->pdo->prepare('INSERT INTO orders(count, book_isbn, lib_name, user_id) VALUES(?,?,?,?);');
+        $answer->execute(array($count, $isbn, $lib_name, $user_id));
+        return;
+    }
+
     // function that returns genres of a books (if there is multiple times same genre in database, it will only return one of them because of distinct keyword)
     function get_books()
     {
@@ -317,6 +340,13 @@ class MainComponent
         else {
             return FALSE;
         }
+    }
+
+    function delete_from_votes($isbn, $lib_name)
+    {   
+        $answer = $this->pdo->prepare('DELETE FROM votes WHERE book_isbn=? and lib_name=?;');
+        $answer->execute(array($isbn, $lib_name));
+        return;
     }
 
     //function return true if book with given isbn is in database
