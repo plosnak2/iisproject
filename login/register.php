@@ -143,7 +143,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="col-md-6">
                                             <!-- Name -->
                                             <label for="name" class="text-info">Meno:</label><br>
-                                            <input type="text" name="name" id="name" class="form-control" value="<?php if(isset($_POST['name'])){echo $_POST['name'];}?>" pattern="[A-Z a-z]*">
+                                            <input type="text" name="name" id="name" class="form-control" value="<?php if(isset($_POST['name'])){echo $_POST['name'];}?>" pattern="[A-Z a-z \´ \ˇ]*">
 
                                             <!-- Mail -->
                                             <label for="mail" class="text-info">E-mail*:</label><br>
@@ -151,11 +151,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                                             <!-- Street -->
                                             <label for="street" class="text-info">Ulica:</label><br>
-                                            <input type="text" name="street" id="street" class="form-control" value="<?php if(isset($_POST['street'])){echo $_POST['street'];}?>" pattern="[A-Z a-z]*">
+                                            <input type="text" name="street" id="street" class="form-control" value="<?php if(isset($_POST['street'])){echo $_POST['street'];}?>" pattern="[A-Z a-z \´ \ˇ]*">
 
                                             <!-- City -->
                                             <label for="city" class="text-info">Mesto:</label><br>
-                                            <input type="text" name="city" id="city" class="form-control" value="<?php if(isset($_POST['city'])){echo $_POST['city'];}?>" pattern="[A-Z a-z]*">
+                                            <input type="text" name="city" id="city" class="form-control" value="<?php if(isset($_POST['city'])){echo $_POST['city'];}?>" pattern="[A-Z a-z \´ \ˇ]*">
 
                                             <!-- Password -->
                                             <label for="password" class="text-info">Heslo*:</label><br>
@@ -166,7 +166,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="col-md-6">
                                             <!-- Surname -->
                                             <label for="surname" class="text-info">Priezvisko:</label><br>
-                                            <input type="text" name="surname" id="surname" class="form-control" value="<?php if(isset($_POST['surname'])){echo $_POST['surname'];}?>" pattern="[A-Z a-z]*">
+                                            <input type="text" name="surname" id="surname" class="form-control" value="<?php if(isset($_POST['surname'])){echo $_POST['surname'];}?>" pattern="[A-Z a-z \´ \ˇ]*">
 
                                             <!-- Phone -->
                                             <label for="phone" class="text-info">Tel. číslo:</label><br>
