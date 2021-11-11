@@ -436,6 +436,41 @@ class MainComponent
         $answer->execute([$data['street'], $data['number'], $data['postal_code'], $data['city'] , $address_id]);
         return;
     }
+
+    //function that add new library and address to database
+    function add_library($data, $opening_hours)
+    {
+        $stmt = $this->pdo->prepare('INSERT INTO address (street, number, city, postal_code) VALUES (?, ?, ?, ?)');
+        
+        if ($stmt->execute([$data['street'], $data['number'], $data['city'], $data['postal_code']]))
+        {
+            $data['address_id'] = $this->pdo->lastInsertId();
+            unset($stmt);
+
+            $stmt = $this->pdo->prepare('INSERT INTO library (name, opening_hours, description, address_id) VALUES (?, ?, ?, ?)');
+            $stmt->execute([$data['name'], $opening_hours, $data['description'], $data['address_id']]);            
+        }
+        return;
+    }
+
+    //function return true if library name exist in database
+    function library_exist($name){
+        $answer = $this->pdo->prepare('SELECT name FROM library WHERE name=?');
+        $answer->execute(array($name));
+        if($answer->rowCount() > 0){
+            return TRUE;
+        }
+        else {
+            return FALSE;
+        }
+    }
+
+    //function insert 0 into count in availability, when new library is create
+    function set_availability($isbn, $name)
+    {
+        $stmt = $this->pdo->prepare('INSERT INTO availability(count, book_isbn, lib_name) VALUES (0, ?, ?)');        
+        $stmt->execute([$isbn, $name]);
+    }
 }
 
 ?>

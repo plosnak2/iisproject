@@ -6,30 +6,11 @@ session_start();
 if(!isset($_SESSION['id'])){
     header("location: ../index.php");
 }
-if($_SESSION['role'] == 1){
-    header("location: ../index.php");
-}
-if($_SESSION['role'] == 2){
+if($_SESSION['role'] != 4){
     header("location: ../index.php");
 }
 
-$lib = $db->get_lib($_GET['lib_name']);
-    $name = str_replace(' ', '', $_GET['lib_name']);
-    if ($lib['address_id'] != NULL){
-        $address_tmp = $db->get_user_address($lib['address_id']);
-        $address = $address_tmp['street'] . ", " . $address_tmp['number'] . ", " . $address_tmp['postal_code'] . ", " . $address_tmp['city'];
-    }
-    else
-        $address = '';
-
-    $hours = explode(' ', $lib['opening_hours']);
-
-if($_SESSION['role'] == 3 && ($lib['user_id'] != $_SESSION['id'])){
-    header("location: ../index.php");
-}
-
-
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if(isset($_POST['submit'])){
     if(isset($_POST['from0'])){
         if($_POST['from0'] == '')
             $_POST['from0'] = "-";
@@ -66,33 +47,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         if($_POST['to13'] == '')
             $_POST['to13'] = "-";
         $new_opening_hours = $_POST['from0'] ." " . $_POST['to1'] . " " .$_POST['from2'] ." " . $_POST['to3'] . " " .$_POST['from4'] ." " . $_POST['to5'] . " " .$_POST['from6'] ." " . $_POST['to7'] . " " .$_POST['from8'] ." " . $_POST['to9'] . " " .$_POST['from10'] ." " . $_POST['to11'] . " " .$_POST['from12'] ." " . $_POST['to13'];
-    
     }
+    if(!($db->library_exist($_POST['name']))){
+        $db->add_library($_POST, $new_opening_hours);
+        $isbns = $db->get_books();
+        while($isbn = $isbns->fetch()){
+            $db->set_availability($isbn['isbn'], $_POST['name']);
+        }
+        
+        $name = str_replace(' ', '', $_POST['name']);
+        //Stores the tempname as it is given by the host when uploaded.
+        $imagetemp = $_FILES['pic']['tmp_name'];
 
-    $name = str_replace(' ', '', $_POST['lib_name']);
-    //Stores the tempname as it is given by the host when uploaded.
-    $imagetemp = $_FILES['pic']['tmp_name'];
+        //The path you wish to upload the image to
+        $imagePath = "../images/libraries/" . $name . ".png";
 
-    //The path you wish to upload the image to
-    $imagePath = "../images/libraries/" . $name . ".png";
-
-    if (is_uploaded_file($imagetemp)) {
-        move_uploaded_file($imagetemp, $imagePath);    
+        if (is_uploaded_file($imagetemp)) {
+            move_uploaded_file($imagetemp, $imagePath);    
+        }
     }
-
-    if(isset($_POST['description'])){
-        $db->update_all_in_library($_POST, $new_opening_hours, $_POST['lib_name']);
+    else{
+        $error['name'] = "error";
     }
-    else {
-        $db->update_in_library($new_opening_hours, $_POST['lib_name']);
-    }
-
-    $db->update_address($_POST, $lib['address_id']);
-    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-    //header("location: ./contact.php");
+    header("location: ./contact.php");
 }
-  
 
 ?>
 
@@ -224,58 +202,47 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="container">
             <form id="add-form" class="form" action="" method="post" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-5 text-center">
-                        <?php echo '<input type="hidden" name="lib_name" value="'. $_GET['lib_name'] . '">'; ?>                                             
-                        <h2>Obrázok </h2>                            
-                        <hr/>
-                        <input type="file" name="pic"/>
-                        </br>
-                        <div class="col-md-12 text-center" style="margin-top: 30;">
-                                <img id="image" alt="obrázok" src= "<?php echo "../images/libraries/". $name. ".png";?>" style="width:20vw">
-                        </div>                                                
-                    </div>
-                    <div class="col-md-7">                        
+                    <div class="col-md-12 text-center">
+                        <?php if(isset($error['name'])) { echo '<script type="text/javascript">
+                            alert("Knižnica so zadaným názvom existuje!");
+                            </script>';}
+                        ?>
+                            <h2>Nová knižnica</h2>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Názov" value="<?php if(isset($_POST['name'])){echo $_POST['name'];}?>" required>
+
+                            <hr/>
+                        </div>
+                    
+                    <div class="col-md-6">                        
                             <div class="row">                            
-                                <div class="col-md-12 text-center">
-                                    <h2><?php if(isset($_GET['lib_name'])){echo $_GET['lib_name'];}?></h2>
-                                    <hr/>
-                                </div>
+                                
 
                                 <div class="col-md-2 text-center" style="margin-top:30px">
                                     <h4>Adresa:</h4>
                                 </div>
                                 <div class="col-md-10 text-center" style="margin-top:30px">
-                                    <input type="text" name="street" id="street" class="form-control" placeholder="Ulica" value="<?php if(isset($_GET['lib_name'])){echo $address_tmp['street'];}?>" required>
+                                    <input type="text" name="street" id="street" class="form-control" placeholder="Ulica" value="<?php if(isset($_POST['street'])){echo $_POST['street'];}?>" required>
                                 </div>
                                 <div class="col-md-12 text-center" style="margin-top:30px">
-                                    <input type="number" name="number" id="number" class="form-control" placeholder="Číslo domu" value="<?php if(isset($_GET['lib_name'])){echo $address_tmp['number'];}?>" required>
+                                    <input type="number" name="number" id="number" class="form-control" placeholder="Číslo domu" value="<?php if(isset($_POST['number'])){echo $_POST['number'];}?>" required>
                                 </div>
                                 <div class="col-md-12 text-center" style="margin-top:30px">
-                                    <input type="text" name="postal_code" id="postal_code" class="form-control" placeholder="PSČ" value="<?php if(isset($_GET['lib_name'])){echo $address_tmp['postal_code'];}?>" pattern="[0-9]{5}">
+                                    <input type="text" name="postal_code" id="postal_code" class="form-control" placeholder="PSČ" value="<?php if(isset($_POST['postal_code'])){echo $_POST['postal_code'];}?>" pattern="[0-9]{5}">
                                 </div>
                                 <div class="col-md-12 text-center" style="margin-top:30px">
-                                    <input type="text" name="city" id="city" class="form-control" placeholder="Mesto" value="<?php if(isset($_GET['lib_name'])){echo $address_tmp['city'];}?>" required>
+                                    <input type="text" name="city" id="city" class="form-control" placeholder="Mesto" value="<?php if(isset($_POST['city'])){echo $_POST['city'];}?>" required>
                                 </div>
 
                                 <div class="col-md-12 text-center" style="margin-top:30px">
                                     <h4>Informácie:</h4>
                                 </div>
                                 <div class="col-md-12 text-center" style="margin-top:30px">
-                                    <?php 
-                                        if(isset($_POST['edit'])){
-                                            echo '<input type="text" name="description" id="description" class="form-control" value="';
-                                            if(isset($_GET['lib_name'])) {echo $lib['description'];};
-                                            echo '" required>';
-                                        }
-                                        else {
-                                            echo '<p>';
-                                            if(isset($_GET['lib_name'])) {echo $lib['description'];};
-                                            echo '</p>';
-                                        }
-
-                                    ?>
+                                    <input type="text" name="description" id="description" class="form-control" value="" required>
                                 </div>
-
+                            </div>                        
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="row">  
                                 <div class="col-md-12 text-center" style="margin-top:30px">
                                     <h4>Otváracie hodiny:</h4>
                                 </div>
@@ -320,14 +287,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 <div class="col-md-3 text-center"> <label>Nedela:</label> </div>    
                                 <div class="col-md-3 text-center"> <input type="time" name="from12" value="<?php echo $hours[12]; ?>"> </div>
                                 <div class="col-md-3 text-center"> <label>-</label> </div>
-                                <div class="col-md-3 text-center">  <input type="time" name="to13" value="<?php echo $hours[13]; ?>"> </div>
-                                
-                                
+                                <div class="col-md-3 text-center">  <input type="time" name="to13" value="<?php echo $hours[13]; ?>"> </div>                                          
+
+                                <div class="col-md-3 text-center" style="margin-top: 30px;"> <label for:"pic">Obrázok</label> </div>
+                                <div class="col-md-3 text-center" style="margin-top: 30px;"> <input type="file" name="pic"/> </div>
+
                                 <div class="col-md-12 text-center" style="margin-top:30px">
                                     <input type="submit" name="submit" class="btn btn-info btn-md" value="Uložiť">
-                                    <input type="submit" name="edit" class="btn btn-info btn-md" value="Zmeniť info">
                                 </div>
-                            </div>                        
+                        </div>                                                
                     </div>
                 </div>
             </form>
