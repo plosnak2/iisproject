@@ -227,6 +227,10 @@ session_start();
                                 echo '<td style="vertical-align:middle"><b>'.$librarian['name'] . " " . $librarian['surname'] .'</b></td>';
                                 echo '<td style="vertical-align:middle"><b>'.$address['city'].'</b></td>';
                                 if((!isset($_SESSION['id'])) || ($_SESSION['role'] == 1)){ echo '<td style="vertical-align:middle"><button type="button" onclick="window.location.href='."'./contact_user.php?lib_name=". $lib['name']. "'" . '" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';}
+                                
+                                if((isset($_SESSION['id'])) && ($_SESSION['role'] == 3) && ($lib['user_id'] != $_SESSION['id'])){ echo '<td style="vertical-align:middle"><button type="button" onclick="window.location.href='."'./contact_user.php?lib_name=". $lib['name']. "'" . '" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';}
+                                if((isset($_SESSION['id'])) && ($_SESSION['role'] == 3) && ($lib['user_id'] == $_SESSION['id'])){ echo '<td style="vertical-align:middle"><button type="button" onclick="window.location.href='."'./contact_admin.php?lib_name=". $lib['name']. "'" . '" class="btn btn-primary" style="margin-top:10px">Spravovať</button></td>';}
+                                
                                 if((isset($_SESSION['id'])) && ($_SESSION['role'] == 4)){ echo '<td style="vertical-align:middle"><button type="button" onclick="window.location.href='."'./contact_admin.php?lib_name=". $lib['name']. "'" . '" class="btn btn-primary" style="margin-top:10px">Spravovať</button></td>';}
                                 echo '</tr>';
                             }

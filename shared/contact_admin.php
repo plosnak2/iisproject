@@ -24,6 +24,11 @@ $lib = $db->get_lib($_GET['lib_name']);
 
     $hours = explode(' ', $lib['opening_hours']);
 
+if($_SESSION['role'] == 3 && ($lib['user_id'] != $_SESSION['id'])){
+    header("location: ../index.php");
+}
+
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(isset($_POST['from0'])){
         if($_POST['from0'] == '')
@@ -222,7 +227,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div class="col-md-5 text-center">
                         <?php echo '<input type="hidden" name="lib_name" value="'. $_GET['lib_name'] . '">'; ?>                                             
                         <h2>Obrázok </h2>                            
-                        <!--<input type="url" onchange="myFunction()" name="photo" id="photo" class="form-control" placeholder="Zadajte URL k obrázku s titulnou fotografiou knihy" value=" /*if(isset($_GET['photo'])){echo $_GET['photo'];}?>" required>-->
                         <hr/>
                         <input type="file" name="pic"/>
                         </br>
