@@ -43,7 +43,7 @@ session_start();
                             echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednávky</a>';
                             echo '</li>';
                             echo '<li class="nav-item">';
-                            echo '<a class="nav-link" href="../user/add_user.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                            echo '<a class="nav-link" href="../book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                             echo '</li>';
                         }
                         else if($_SESSION['role'] == 3)
@@ -55,27 +55,27 @@ session_start();
                             echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
                             echo '</li>';
                             echo '<li class="nav-item">';
-                            echo '<a class="nav-link" href="../user/add_user.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
+                            echo '<a class="nav-link" href="../book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                             echo '</li>';
                         } 
                         else if($_SESSION['role'] == 4)
                         {
                             echo '<li class="nav-item">';
-                            echo '<a class="nav-link" href="./reservations.php" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
+                            echo '<a class="nav-link" href="../admin/reservations.php" style="text-align:center; color: white; background-color:black; width:120px">Rezervácie</a>';
                             echo '</li>';
                             echo '<li class="nav-item">';
-                            echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Objednať</a>';
+                            echo '<a class="nav-link" href="../admin/add_books.php" style="text-align:center; color: white; background-color:black; width:120px">Pridať</a>';
                             echo '</li>';
                             echo '<li class="nav-item">';
                             echo '<a class="nav-link" href="../book/add_book.php" style="text-align:center; color: white; background-color:black; width:120px">Nová kniha</a>';
                             echo '</li>';
                             echo '<li class="nav-item">';
-                            echo '<a class="nav-link" href="./user_management.php" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
+                            echo '<a class="nav-link" href="../admin/user_management.php" style="text-align:center; color: white; background-color:black; width:120px">Upraviť</a>';
                             echo '</li>';
                         }
 
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="#" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
+                        echo '<a class="nav-link" href="./profile.php" style="text-align:center; color: white; background-color:black; width:120px">Profil</a>';
                         echo '</li>';
                     }
                     ?>
@@ -227,6 +227,7 @@ session_start();
                                 echo '<td style="vertical-align:middle"><b>'.$librarian['name'] . " " . $librarian['surname'] .'</b></td>';
                                 echo '<td style="vertical-align:middle"><b>'.$address['city'].'</b></td>';
                                 if((!isset($_SESSION['id'])) || ($_SESSION['role'] == 1)){ echo '<td style="vertical-align:middle"><button type="button" onclick="window.location.href='."'./contact_user.php?lib_name=". $lib['name']. "'" . '" class="btn btn-primary" style="margin-top:10px">Otvoriť</button></td>';}
+                                if((isset($_SESSION['id'])) && ($_SESSION['role'] == 4)){ echo '<td style="vertical-align:middle"><button type="button" onclick="window.location.href='."'./contact_admin.php?lib_name=". $lib['name']. "'" . '" class="btn btn-primary" style="margin-top:10px">Spravovať</button></td>';}
                                 echo '</tr>';
                             }
                         ?>

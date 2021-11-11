@@ -385,6 +385,27 @@ class MainComponent
         $answer->execute([$name]);
         return $answer->fetch();
     }
+
+    //function that update information in library
+    function update_all_in_library($data, $opening_hours, $lib_name){
+        $answer = $this->pdo->prepare('UPDATE library SET opening_hours = ?, description = ?  where name = ?');
+        $answer->execute([$opening_hours, $data['description'], $lib_name]);
+        return;
+    }
+
+    //function that update information in library
+    function update_in_library($opening_hours, $lib_name){
+        $answer = $this->pdo->prepare('UPDATE library SET opening_hours = ?  where name = ?');
+        $answer->execute([$opening_hours, $lib_name]);
+        return;
+    }
+
+    //function that update information in address
+    function update_address($data, $address_id){
+        $answer = $this->pdo->prepare('UPDATE address SET street = ?, number = ?, postal_code = ?, city = ?  where id = ?');
+        $answer->execute([$data['street'], $data['number'], $data['postal_code'], $data['city'] , $address_id]);
+        return;
+    }
 }
 
 ?>
