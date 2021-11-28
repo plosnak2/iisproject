@@ -128,26 +128,25 @@ INSERT INTO address(street, number, city, postal_code)
     ('Studničná', '9', 'Považská Bystrica', '81748');
 
 INSERT INTO user(name, surname, mail, phone, password, role, address_id)
-    VALUES ('Alex', 'Babka', 'alex.babka11@gmail.com', '0904183951', '$2y$10$I1rqUhH/nfaipLQYX6YMFO1edFnDHNEenAWQA.tGreWtU7/imSmnW', 1,1),
-    ('Hana', 'Jakabová', 'knihovnickahana@gmail.com', '0905654789', '$2y$10$n.aG2BiMVD6s5gy9xPgfTOofldLSGthGDh2oo7DYTQFTwoTHueUOC', 3,2),
-    ('Igor', 'Jurčina', 'ijurcina@centrum.sk', '0904442266', 'hashed_pass', 1,4),
-    ('Anabela', 'Bednárová', 'a.bednarova@gmail.com', '0907167943', 'hashed_pass', 1,6),
-    ('Ignác', 'Ker', 'igi.ker@post.sk', '0907625856', 'hashed_pass', 1,7),
-    ('Boris', 'Čapka', 'bo.capka5@gmail.com', '0905856854', 'hashed_pass', 1,8),
-    ('Maroš', 'Lupták', 'knihovnikmaros@gmail.com', '0915242624', '$2y$10$n.aG2BiMVD6s5gy9xPgfTOofldLSGthGDh2oo7DYTQFTwoTHueUOC', 3,9),
-    ('Erika', 'Drobná', 'drobna.erika@gmail.com', '0903157984', 'hashed_pass', 1,10),
-    ('Oliver', 'Zima', 'ozima@centrum.sk', '0901535743', 'hashed_pass', 1,11),
-    ('Klára', 'Gašparová', 'gasparklara3@centrum.sk', '0907384729', 'hash_pass', 1,12),
-    ('Štefan', 'Distribútor', 'distributor@gmail.com', '0901234567', '$2y$10$3zX..jPeRZ2ybbpnoj5P/ut3cxrlGrQzV04kdgWYnh.RZ/5LXPHe2', 2,13),
-    ('Adam', 'Admin', 'admin@gmail.com', '0902345678', '$2y$10$gqPx1k54JO6ucth92gCdFOLvN0I2mi36T/hN3VVzuqehM8me8mqbm', 4,14);
+    VALUES 
+    ('Alex', 'Babka', 'alex.babka11@gmail.com', '0904183951', '$2y$10$I1rqUhH/nfaipLQYX6YMFO1edFnDHNEenAWQA.tGreWtU7/imSmnW', 1,1),
+    ('Igor', 'Jurčina', 'ijurcina@centrum.sk', '0904442266', '$2y$10$uHmt0biAm4wzi3gXdFLh1uAzyET2wdjpuc4YB8R48TMs3aRgIYihe', 1,2),
+    ('Anabela', 'Bednárová', 'a.bednarova@gmail.com', '0907167943', '$2y$10$Og6rYhN.lF7kKiZxMIA6yuSp4tZHkgx6qrQ786rDHu07q1Uk8nGaG', 1,3),
+    
+    ('Štefan', 'Distribútor', 'distributor@gmail.com', '0901234567', '$2y$10$3zX..jPeRZ2ybbpnoj5P/ut3cxrlGrQzV04kdgWYnh.RZ/5LXPHe2', 2,4),
+
+    ('Hana', 'Jakabová', 'knihovnickahana@gmail.com', '0905654789', '$2y$10$n.aG2BiMVD6s5gy9xPgfTOofldLSGthGDh2oo7DYTQFTwoTHueUOC', 3,5),
+    ('Maroš', 'Lupták', 'knihovnikmaros@gmail.com', '0915242624', '$2y$10$n.aG2BiMVD6s5gy9xPgfTOofldLSGthGDh2oo7DYTQFTwoTHueUOC', 3,6),
+    
+    ('Adam', 'Admin', 'admin@gmail.com', '0902345678', '$2y$10$gqPx1k54JO6ucth92gCdFOLvN0I2mi36T/hN3VVzuqehM8me8mqbm', 4,7);
 
 INSERT INTO library(name, opening_hours, description, address_id, user_id)
-    VALUES ('Mestská knižnica', '- - 07:00 18:30 07:00 18:30 07:00 18:30 07:00 18:30 08:00 17:00 08:00 17:00',
-    'Zmodernizovaná knižnica v Nitre. U nás zažijete neskotučné množstvo hodín v objatí slovenskej, ale aj medzinárodnej literatúri.', 3, 2),
-    ('Knižnica Juraja Fándlyho', '- - 08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00',
-    'História Knižnica Juraja Fándlyho sa začala písať v roku 1983. Za tú dobu sme navýšili počty knižných titulov. V dnešnej dobe sa snažíme zaujať organizáciou rôznzch podujatí.', 5, 7),
-    ('Univerzitná knižnica', '- - 08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00',
-    'História Knižnica Juraja Fándlyho sa začala písať v roku 1983. Za tú dobu sme navýšili počty knižných titulov. V dnešnej dobe sa snažíme zaujať organizáciou rôznzch podujatí.', 5, NULL);
+    VALUES ('Mestská knižnica', '07:00 18:30 07:00 18:30 07:00 18:30 07:00 18:30 08:00 17:00 08:00 17:00 - -',
+    'Zmodernizovaná knižnica v Hlohovci. U nás zažijete neskotučné množstvo hodín v objatí slovenskej, ale aj medzinárodnej literatúri.', 8, 5),
+    ('Knižnica Juraja Fándlyho', '08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00 - -',
+    'História Knižnica Juraja Fándlyho sa začala písať v roku 1983. Za tú dobu sme navýšili počty knižných titulov. V dnešnej dobe sa snažíme zaujať organizáciou rôznzch podujatí.', 9, 6),
+    ('Univerzitná knižnicaUniverzitná knižnica', '08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00 - -',
+    'Univerzitná knižnica v Šuranoch je vrcholná kultúrna, informačná, vedecká a vzdelávacia inštitúcia v oblasti knižničnej činnosti..', 10, NULL);
 
 INSERT INTO book(isbn, name, authors, year, publisher, genre, rating)
     VALUES ('9788055606354', 'Pán prsteňov I. - Spoločenstvo prsteňa', 'J.R.R. Tolkien', 2012 , 'Slovart', 'Fantasy', 4.2),
@@ -192,6 +191,7 @@ INSERT INTO availability(count, book_isbn, lib_name)
     (4, '9788055645797', 'Mestská knižnica'),
     (0, '9788056603116', 'Mestská knižnica'),
     (17, '9788056614464', 'Mestská knižnica'),
+
     (11, '9788055606354', 'Knižnica Juraja Fándlyho'),
     (5, '9788027507535', 'Knižnica Juraja Fándlyho'),
     (3, '9788022021852', 'Knižnica Juraja Fándlyho'),
@@ -211,45 +211,49 @@ INSERT INTO availability(count, book_isbn, lib_name)
     (0, '9788082420190', 'Knižnica Juraja Fándlyho'),
     (0, '9788055645797', 'Knižnica Juraja Fándlyho'),
     (8, '9788056603116', 'Knižnica Juraja Fándlyho'),
-    (7, '9788056614464', 'Knižnica Juraja Fándlyho');
+    (7, '9788056614464', 'Knižnica Juraja Fándlyho'),
+    (0, '9788055606354', 'Univerzitná knižnica'),
+
+    (0, '9788027507535', 'Univerzitná knižnica'),
+    (5, '9788022021852', 'Univerzitná knižnica'),
+    (1, '9788055155869', 'Univerzitná knižnica'),
+    (3, '9788055606378', 'Univerzitná knižnica'),
+    (0, '9788024276632', 'Univerzitná knižnica'),
+    (8, '9788055652627', 'Univerzitná knižnica'),
+    (2, '9788022023375', 'Univerzitná knižnica'),
+    (4, '9788055178714', 'Univerzitná knižnica'),
+    (2, '9788055163468', 'Univerzitná knižnica'),
+    (12, '9788055602172', 'Univerzitná knižnica'),
+    (0, '9788022021609', 'Univerzitná knižnica'),
+    (0, '9788082340047', 'Univerzitná knižnica'),
+    (4, '9788088268567', 'Univerzitná knižnica'),
+    (1, '9788088262176', 'Univerzitná knižnica'),
+    (3, '9788080902100', 'Univerzitná knižnica'),
+    (0, '9788082420190', 'Univerzitná knižnica'),
+    (0, '9788055645797', 'Univerzitná knižnica'),
+    (7, '9788056603116', 'Univerzitná knižnica'),
+    (1, '9788056614464', 'Univerzitná knižnica');
 
 INSERT INTO reservation(date_end, status, book_isbn, lib_name, user_id)
-	VALUES ('2021-11-12', 1, '9788022021609', 'Mestská knižnica', 1),
-	('2021-10-31', 1, '9788055652627', 'Knižnica Juraja Fándlyho', 1),
-	('2021-11-1', 2, '9788022021852', 'Mestská knižnica', 1),
-	(null, 3, '9788055163468', 'Knižnica Juraja Fándlyho', 1),
-	('2021-11-1', 4, '9788056603116', 'Knižnica Juraja Fándlyho', 1),
-	('2021-11-19', 4, '9788088262176', 'Knižnica Juraja Fándlyho', 3),
-	('2021-11-09', 1, '9788056614464', 'Mestská knižnica', 4),
-	('2021-11-19', 2, '9788055178714', 'Mestská knižnica', 5),
-	(null, 3, '9788022023375', 'Knižnica Juraja Fándlyho', 6),
-	(null, 5, '9788022023375', 'Mestská knižnica', 1);
+	VALUES ('2021-11-12', 4, '9788022021609', 'Mestská knižnica', 1),
+	(null, 5, '9788055652627', 'Knižnica Juraja Fándlyho', 1),
+	('2022-1-10', 2, '9788022021852', 'Mestská knižnica', 2),
+	(null, 3, '9788055163468', 'Knižnica Juraja Fándlyho', 2),
 
 #UPDATE reservation SET date_end=null, status=3 WHERE status=1 and current_date() > date_end;
 
 INSERT INTO votes(book_isbn, lib_name, user_id)
-    VALUES ('9788088268567', 'Knižnica Juraja Fándlyho', 1),
-    ('9788088268567', 'Knižnica Juraja Fándlyho', 2),
-    ('9788056614464', 'Mestská knižnica', 3),
-    ('9788055178714', 'Knižnica Juraja Fándlyho', 4),
-    ('9788027507535', 'Mestská knižnica', 5),
-    ('9788024276632', 'Knižnica Juraja Fándlyho', 6),
-    ('9788082420190', 'Knižnica Juraja Fándlyho', 7),
-    ('9788088262176', 'Mestská knižnica', 8),
-    ('9788022023375', 'Mestská knižnica', 9),
-    ('9788055645797', 'Knižnica Juraja Fándlyho', 10);
+    VALUES ('9788056603116', 'Mestská knižnica', 1),
+    ('9788055606378', 'Knižnica Juraja Fándlyho', 1),
+    ('9788024276632', 'Knižnica Juraja Fándlyho', 1),
+    ('9788024276632', 'Knižnica Juraja Fándlyho', 2),
+    ('9788082420190', 'Univerzitná knižnica', 3);
 
 INSERT INTO orders(count, book_isbn, lib_name, user_id)
-    VALUES (1, '9788055645797', 'Knižnica Juraja Fándlyho', 1),
-    (1, '9788027507535', 'Mestská knižnica', 2),
-    (2, '9788055606378', 'Knižnica Juraja Fándlyho', 3),
-    (4, '9788022021609', 'Mestská knižnica', 4),
-    (3, '9788088268567', 'Mestská knižnica', 5),
-    (1, '9788024276632', 'Knižnica Juraja Fándlyho', 6),
-    (2, '9788088268567', 'Knižnica Juraja Fándlyho', 7),
-    (1, '9788088262176', 'Mestská knižnica', 8),
-    (2, '9788080902100', 'Mestská knižnica', 9),
-    (3, '9788056603116', 'Mestská knižnica', 10);
+    VALUES (1, '9788022021609', 'Knižnica Juraja Fándlyho', 6),
+    (1, '9788027507535', 'Mestská knižnica', 5),
+    (2, '9788055652627', 'Knižnica Juraja Fándlyho', 6),
+    (4, '9788022021609', 'Mestská knižnica', 5);
 
 CREATE TRIGGER increment_count
     AFTER UPDATE ON reservation FOR EACH ROW
