@@ -141,12 +141,19 @@ INSERT INTO user(name, surname, mail, phone, password, role, address_id)
     ('Adam', 'Admin', 'admin@gmail.com', '0902345678', '$2y$10$gqPx1k54JO6ucth92gCdFOLvN0I2mi36T/hN3VVzuqehM8me8mqbm', 4,7);
 
 INSERT INTO library(name, opening_hours, description, address_id, user_id)
+<<<<<<< HEAD
     VALUES ('Mestská knižnica', '07:00 18:30 07:00 18:30 07:00 18:30 07:00 18:30 08:00 17:00 08:00 17:00 - -',
     'Zmodernizovaná knižnica v Hlohovci. U nás zažijete neskotučné množstvo hodín v objatí slovenskej, ale aj medzinárodnej literatúri.', 8, 5),
     ('Knižnica Juraja Fándlyho', '08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00 - -',
     'História Knižnica Juraja Fándlyho sa začala písať v roku 1983. Za tú dobu sme navýšili počty knižných titulov. V dnešnej dobe sa snažíme zaujať organizáciou rôznzch podujatí.', 9, 6),
     ('Univerzitná knižnicaUniverzitná knižnica', '08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00 - -',
     'Univerzitná knižnica v Šuranoch je vrcholná kultúrna, informačná, vedecká a vzdelávacia inštitúcia v oblasti knižničnej činnosti..', 10, NULL);
+=======
+    VALUES ('Mestská knižnica', '- - 07:00 18:30 07:00 18:30 07:00 18:30 07:00 18:30 08:00 17:00 08:00 17:00',
+    'Zmodernizovaná knižnica v Nitre. U nás zažijete neskotučné množstvo hodín v objatí slovenskej, ale aj medzinárodnej literatúri.', 3, 2),
+    ('Knižnica Juraja Fándlyho', '- - 08:30 18:00 08:30 18:00 08:30 18:00 08:30 18:00 08:30 19:00 08:00 12:00',
+    'História Knižnica Juraja Fándlyho sa začala písať v roku 1983. Za tú dobu sme navýšili počty knižných titulov. V dnešnej dobe sa snažíme zaujať organizáciou rôznzch podujatí.', 5, 7);
+>>>>>>> c3dafe5e7e32c19de70a0608df950e38a640a9da
 
 INSERT INTO book(isbn, name, authors, year, publisher, genre, rating)
     VALUES ('9788055606354', 'Pán prsteňov I. - Spoločenstvo prsteňa', 'J.R.R. Tolkien', 2012 , 'Slovart', 'Fantasy', 4.2),
