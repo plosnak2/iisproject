@@ -367,6 +367,12 @@ class MainComponent
         $stmt->execute([$data['isbn'], $data['name'], $data['authors'], $data['year'], $data['publisher'], $data['genre'], $data['rating']]);
     }
 
+    //function add new book availability to database
+    function add_new_book_availability($data, $lib_name){
+        $stmt = $this->pdo->prepare("INSERT INTO availability(count, book_isbn, lib_name) VALUES (?, ?, ?)");
+        $stmt->execute([0, $data['isbn'], $lib_name]);
+    }
+
     //function return all users from database
     function get_users(){
         $answer = $this->pdo->prepare('SELECT id, mail, name, surname, role FROM user');

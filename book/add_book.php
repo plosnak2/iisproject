@@ -20,6 +20,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
             // Function to write image into file
             file_put_contents($img, file_get_contents($url));
+            $libs = $db->get_libs();
+            while($lib = $libs->fetch())
+            {
+                $db->add_new_book_availability($_POST, $lib['name']);
+            }
 
             // Redirect user to welcome page
             header("location: ../index.php");
