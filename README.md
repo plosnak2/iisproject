@@ -4,7 +4,7 @@
 - Login informations:
 
 | ID Role      | Username | Password |
-| ----------- | ----------- | |
+| ----------- | ----------- | ----------- |
 | Reader      | alex.babka11@gmail.com       | user |
 | Distributor   | distributor@gmail.com        | distributor |
 | Librarian   | knihovnickahana@gmail.com        | knihovnik |
